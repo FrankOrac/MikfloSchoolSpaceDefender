@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Defender - Mikflo Schools</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="game-ui">
+            <div>Score: <span id="score">0</span></div>
+            <div>Lives: <span id="lives">3</span></div>
+            <div>Level: <span id="level">1</span></div>
+            <div id="powerUpStatus"></div>
+        </div>
+
+        <div class="menu-screen" id="startScreen">
+            <h1>🚀 SPACE DEFENDER</h1>
+            <h2>Mikflo Schools Technology Division</h2>
+            <p style="margin-bottom: 30px;">Defend Earth from the asteroid invasion!</p>
+            <button class="menu-button" onclick="startGame()">START GAME</button>
+            <button class="menu-button" onclick="showInstructions()">INSTRUCTIONS</button>
+            <button class="menu-button" onclick="showHighScores()">HIGH SCORES</button>
+        </div>
+
+        <div class="menu-screen" id="gameOverScreen" style="display: none;">
+            <h1>GAME OVER</h1>
+            <div style="margin: 20px 0;">
+                <div style="font-size: 1.5em; color: #00ff88;">Final Score: <span id="finalScore">0</span></div>
+                <div id="highScoreMessage" style="display: none;" class="high-score">🏆 NEW HIGH SCORE! 🏆</div>
+            </div>
+            <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
+            <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
+        </div>
+
+        <div class="menu-screen" id="instructionsScreen" style="display: none;">
+            <h1>INSTRUCTIONS</h1>
+            <div style="text-align: left; margin: 20px 0;">
+                <p><strong>🎮 Controls:</strong></p>
+                <p>• Arrow Keys or WASD: Move spaceship</p>
+                <p>• Spacebar: Shoot lasers</p>
+                <p>• P: Pause game</p>
+                <br>
+                <p><strong>🎯 Objective:</strong></p>
+                <p>• Destroy asteroids to earn points</p>
+                <p>• Collect power-ups for special abilities</p>
+                <p>• Survive as long as possible!</p>
+                <br>
+                <p><strong>⚡ Power-ups:</strong></p>
+                <p>• 🔥 Rapid Fire: Faster shooting</p>
+                <p>• 🛡️ Shield: Temporary protection</p>
+                <p>• 💥 Multi-shot: Triple laser beams</p>
+            </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <div class="menu-screen" id="highScoresScreen" style="display: none;">
+            <h1>HIGH SCORES</h1>
+            <div style="margin: 20px 0; font-size: 1.5em;">
+                <div style="color: #ffff00;">Best Score: <span id="displayHighScore">0</span></div>
+            </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <div class="controls">
+            <div>Controls: Arrow Keys/WASD to move, Spacebar to shoot, P to pause</div>
+        </div>
+
+        <div class="mobile-controls">
+            <div class="touch-button" id="shootButton">🔥</div>
+        </div>
+    </div>
+
+    <script src="game.js">
+       
+    </script>
+</body>
+</html>
