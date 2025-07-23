@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Space Defender - Mikflo Schools</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="game-ui">
+            <div>Score: <span id="score">0</span></div>
+            <div>Lives: <span id="lives">3</span></div>
+            <div>Level: <span id="level">1</span></div>
+            <div id="powerUpStatus"></div>
+        </div>
+
+        <div class="menu-screen" id="startScreen">
+            <h1>🚀 SPACE DEFENDER</h1>
+            <h2>Mikflo Schools Technology Division</h2>
+            <p style="margin-bottom: 30px;">Defend Earth from the asteroid invasion!</p>
+            <button class="menu-button" onclick="startGame()">START GAME</button>
+            <button class="menu-button" onclick="showInstructions()">INSTRUCTIONS</button>
+            <button class="menu-button" onclick="showHighScores()">HIGH SCORES</button>
+        </div>
+
+        <div class="menu-screen" id="gameOverScreen" style="display: none;">
+            <h1>GAME OVER</h1>
+            <div style="margin: 20px 0;">
+                <div style="font-size: 1.5em; color: #00ff88;">Final Score: <span id="finalScore">0</span></div>
+                <div id="highScoreMessage" style="display: none;" class="high-score">🏆 NEW HIGH SCORE! 🏆</div>
+            </div>
+            <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
+            <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
+        </div>
+
+        <div class="menu-screen" id="instructionsScreen" style="display: none;">
+            <h1>INSTRUCTIONS</h1>
+            <div style="text-align: left; margin: 20px 0;">
+                <p><strong>🎮 Controls:</strong></p>
+                <p>• On-screen D-pad or Arrow Keys/WASD: Move spaceship</p>
+                <p>• Shoot button or Spacebar: Fire lasers</p>
+                <p>• Pause button or P: Pause game</p>
+                <br>
+                <p><strong>🎯 Objective:</strong></p>
+                <p>• Destroy asteroids to earn points</p>
+                <p>• Collect power-ups for special abilities</p>
+                <p>• Survive as long as possible!</p>
+                <br>
+                <p><strong>⚡ Power-ups:</strong></p>
+                <p>• 🔥 Rapid Fire: Faster shooting</p>
+                <p>• 🛡️ Shield: Temporary protection</p>
+                <p>• 💥 Multi-shot: Triple laser beams</p>
+            </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <div class="menu-screen" id="highScoresScreen" style="display: none;">
+            <h1>HIGH SCORES</h1>
+            <div style="margin: 20px 0; font-size: 1.5em;">
+                <div style="color: #ffff00;">Best Score: <span id="displayHighScore">0</span></div>
+            </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <div class="controls">
+            <div>Desktop: Arrow Keys/WASD to move, Spacebar to shoot, P to pause</div>
+        </div>
+
+        <!-- Mobile On-Screen Controls -->
+        <div class="mobile-controls" id="mobileControls">
+            <!-- Movement D-Pad -->
+            <div class="dpad-container">
+                <div class="dpad">
+                    <button class="dpad-btn dpad-up" id="moveUp">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                        </svg>
+                    </button>
+                    <div class="dpad-middle">
+                        <button class="dpad-btn dpad-left" id="moveLeft">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+                            </svg>
+                        </button>
+                        <div class="dpad-center"></div>
+                        <button class="dpad-btn dpad-right" id="moveRight">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="dpad-btn dpad-down" id="moveDown">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn pause-btn" id="pauseBtn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <button class="action-btn shoot-btn" id="shootBtn">
+                    <div class="shoot-icon">
+                        <svg width="32" height="32" viewBox="0 0 100 100" fill="currentColor">
+                            <!-- Mikflo Schools Logo-inspired bullet design -->
+                            <circle cx="50" cy="20" r="8" fill="#00ff88"/>
+                            <text x="50" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#00ff88">M</text>
+                            <rect x="45" y="25" width="10" height="30" fill="#0099ff"/>
+                            <polygon points="45,60 55,60 50,80" fill="#ffff00"/>
+                        </svg>
+                    </div>
+                    <span>FIRE</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
