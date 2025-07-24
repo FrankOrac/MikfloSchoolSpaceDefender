@@ -1,432 +1,436 @@
 /* Reset and base styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #0a0a2e, #16213e, #0f3460);
-    color: #fff;
-    overflow: hidden;
-    height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(45deg, #0a0a2e, #16213e, #0f3460);
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
 }
 
 /* Game container */
 .game-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #0a0a2e 0%, #000 100%);
 }
 
 /* Canvas styling */
 #gameCanvas {
-    border: 2px solid #00ff88;
-    border-radius: 10px;
-    background: #000;
-    max-width: 100%;
-    max-height: 100%;
+  border: 2px solid #00ff88;
+  border-radius: 10px;
+  background: #000;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Game UI - Always visible */
 .game-ui {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #00ff88;
-    border-radius: 10px;
-    padding: 15px;
-    font-size: 14px;
-    z-index: 1000;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ff88;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 14px;
+  z-index: 1000;
 }
 
 .player-info div {
-    margin-bottom: 5px;
-    color: #00ff88;
-    font-weight: bold;
+  margin-bottom: 5px;
+  color: #00ff88;
+  font-weight: bold;
 }
 
 .game-ui > div {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 
 /* School watermark */
 .school-watermark {
-    position: absolute;
-    bottom: 10px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid #00ff88;
-    border-radius: 5px;
-    padding: 8px 12px;
-    font-size: 10px;
-    color: #00ff88;
-    z-index: 1000;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid #00ff88;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 10px;
+  color: #00ff88;
+  z-index: 1000;
 }
 
 .watermark-logo {
-    font-weight: bold;
-    text-transform: uppercase;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* Menu screens */
 .menu-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    z-index: 2000;
-    padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2000;
+  padding: 20px;
 }
 
 /* School logo */
 .school-logo {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .logo-placeholder {
-    width: 80px;
-    height: 80px;
-    border: 3px solid #00ff88;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 20px;
-    background: linear-gradient(45deg, #00ff88, #0099ff);
+  width: 80px;
+  height: 80px;
+  border: 3px solid #00ff88;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+  background: linear-gradient(45deg, #00ff88, #0099ff);
 }
 
 .logo-text {
-    font-size: 16px;
-    font-weight: bold;
-    color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
 }
 
 .logo-subtext {
-    font-size: 10px;
-    font-weight: bold;
-    color: #000;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
 }
 
 /* Menu headings */
 .menu-screen h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    color: #00ff88;
-    text-shadow: 0 0 20px #00ff88;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  color: #00ff88;
+  text-shadow: 0 0 20px #00ff88;
 }
 
 .menu-screen h2 {
-    font-size: 1.3em;
-    margin-bottom: 10px;
-    color: #0099ff;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  color: #0099ff;
 }
 
 /* Menu buttons */
 .menu-button {
-    background: linear-gradient(45deg, #00ff88, #0099ff);
-    border: none;
-    color: #000;
-    padding: 15px 30px;
-    margin: 10px;
-    font-size: 1.1em;
-    font-weight: bold;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 200px;
-    text-transform: uppercase;
+  background: linear-gradient(45deg, #00ff88, #0099ff);
+  border: none;
+  color: #000;
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  text-transform: uppercase;
 }
 
 .menu-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #00ff88;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00ff88;
 }
 
 .menu-button:active {
-    transform: scale(0.95);
+  transform: scale(0.95);
 }
 
 /* Username input styling */
 .username-input-container {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 .username-input {
-    padding: 15px;
-    font-size: 1.1em;
-    border: 2px solid #00ff88;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    text-align: center;
-    width: 250px;
-    margin-bottom: 20px;
+  padding: 15px;
+  font-size: 1.1em;
+  border: 2px solid #00ff88;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  text-align: center;
+  width: 250px;
+  margin-bottom: 20px;
 }
 
 .username-input:focus {
-    outline: none;
-    border-color: #0099ff;
-    box-shadow: 0 0 10px #0099ff;
+  outline: none;
+  border-color: #0099ff;
+  box-shadow: 0 0 10px #0099ff;
 }
 
 /* Instructions styling */
 .instructions {
-    max-width: 600px;
-    text-align: left;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #00ff88;
-    margin: 20px 0;
+  max-width: 600px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #00ff88;
+  margin: 20px 0;
 }
 
 .instructions h3 {
-    color: #00ff88;
-    margin: 15px 0 10px 0;
-    font-size: 1.2em;
+  color: #00ff88;
+  margin: 15px 0 10px 0;
+  font-size: 1.2em;
 }
 
 .instructions p {
-    color: #ccc;
-    margin-bottom: 10px;
-    line-height: 1.4;
+  color: #ccc;
+  margin-bottom: 10px;
+  line-height: 1.4;
 }
+
+
 
 /* Mobile controls - Always visible */
 .mobile-controls {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    display: flex !important;
-    justify-content: space-between;
-    align-items: flex-end;
-    z-index: 1500;
-    pointer-events: none;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 1500;
+  pointer-events: none;
 }
 
 .mobile-controls > * {
-    pointer-events: auto;
+  pointer-events: auto;
 }
 
 /* D-Pad styling */
 .dpad {
-    position: relative;
-    width: 120px;
-    height: 120px;
+  position: relative;
+  width: 120px;
+  height: 120px;
 }
 
 .dpad-btn {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 255, 136, 0.8);
-    border: 2px solid #00ff88;
-    border-radius: 8px;
-    color: #000;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    transition: all 0.2s ease;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 255, 136, 0.8);
+  border: 2px solid #00ff88;
+  border-radius: 8px;
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  transition: all 0.2s ease;
 }
 
 .dpad-btn:active {
-    background: rgba(0, 255, 136, 1);
-    transform: scale(0.9);
+  background: rgba(0, 255, 136, 1);
+  transform: scale(0.9);
 }
 
 .dpad-up {
-    top: 0;
-    left: 40px;
+  top: 0;
+  left: 40px;
 }
 
 .dpad-down {
-    bottom: 0;
-    left: 40px;
+  bottom: 0;
+  left: 40px;
 }
 
 .dpad-left {
-    left: 0;
-    top: 40px;
+  left: 0;
+  top: 40px;
 }
 
 .dpad-right {
-    right: 0;
-    top: 40px;
+  right: 0;
+  top: 40px;
 }
 
 .dpad-center {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    width: 40px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 2px solid #555;
-    border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #555;
+  border-radius: 50%;
 }
 
 /* Action buttons */
 .action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .action-btn {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 0, 0.8);
-    border: 2px solid #ffff00;
-    border-radius: 50%;
-    color: #000;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    transition: all 0.2s ease;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 0, 0.8);
+  border: 2px solid #ffff00;
+  border-radius: 50%;
+  color: #000;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  transition: all 0.2s ease;
 }
 
 .action-btn:active {
-    background: rgba(255, 255, 0, 1);
-    transform: scale(0.9);
+  background: rgba(255, 255, 0, 1);
+  transform: scale(0.9);
 }
 
 .pause-btn {
-    background: rgba(255, 165, 0, 0.8);
-    border-color: #ffaa00;
+  background: rgba(255, 165, 0, 0.8);
+  border-color: #ffaa00;
 }
 
 .pause-btn:active {
-    background: rgba(255, 165, 0, 1);
+  background: rgba(255, 165, 0, 1);
 }
 
 /* Controls info */
 .controls {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 12px;
-    color: #888;
-    text-align: center;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 5px 10px;
-    border-radius: 5px;
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
 /* Power-up status */
 #powerUpStatus {
-    color: #ffff00;
-    font-weight: bold;
-    font-size: 12px;
+  color: #ffff00;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 /* High scores styling */
 #highScoresList {
-    max-width: 400px;
-    margin: 20px 0;
-    text-align: center;
+  max-width: 400px;
+  margin: 20px 0;
+  text-align: center;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .menu-screen h1 {
-        font-size: 2em;
-    }
-    
-    .menu-button {
-        min-width: 180px;
-        padding: 12px 25px;
-        font-size: 1em;
-    }
-    
-    .username-input {
-        width: 200px;
-    }
-    
-    .game-ui {
-        font-size: 12px;
-        padding: 10px;
-    }
-    
-    .instructions {
-        font-size: 14px;
-        padding: 15px;
-    }
+  .menu-screen h1 {
+    font-size: 2em;
+  }
+
+  .menu-button {
+    min-width: 180px;
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+
+  .username-input {
+    width: 200px;
+  }
+
+  .game-ui {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .instructions {
+    font-size: 14px;
+    padding: 15px;
+  }
 }
 
 @media (max-width: 480px) {
-    .dpad {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .dpad-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-    }
-    
-    .dpad-up, .dpad-down {
-        left: 32.5px;
-    }
-    
-    .dpad-left, .dpad-right {
-        top: 32.5px;
-    }
-    
-    .dpad-center {
-        top: 32.5px;
-        left: 32.5px;
-        width: 35px;
-        height: 35px;
-    }
-    
-    .action-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-    }
-    
-    .mobile-controls {
-        bottom: 15px;
-        left: 15px;
-        right: 15px;
-    }
+  .dpad {
+    width: 100px;
+    height: 100px;
+  }
+
+  .dpad-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+
+  .dpad-up,
+  .dpad-down {
+    left: 32.5px;
+  }
+
+  .dpad-left,
+  .dpad-right {
+    top: 32.5px;
+  }
+
+  .dpad-center {
+    top: 32.5px;
+    left: 32.5px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .action-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  .mobile-controls {
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+  }
 }
 
 /* Portrait orientation adjustments */
 @media (orientation: portrait) and (max-width: 768px) {
-    .mobile-controls {
-        bottom: 10px;
-    }
-    
-    .game-ui {
-        top: 10px;
-        left: 10px;
-        font-size: 11px;
-    }
+  .mobile-controls {
+    bottom: 10px;
+  }
+
+  .game-ui {
+    top: 10px;
+    left: 10px;
+    font-size: 11px;
+  }
 }

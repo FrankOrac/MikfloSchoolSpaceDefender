@@ -36,7 +36,7 @@ let currentPlayerName = 'Student';
 let gameRunning = false;
 let gamePaused = false;
 let score = 0;
-let lives = 3;
+let lives = 4;
 let level = 1;
 let highScores = [];
 
