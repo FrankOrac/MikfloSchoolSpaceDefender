@@ -474,11 +474,9 @@ body {
     }
 }
 
-/* Desktop - hide mobile controls */
-@media (min-width: 769px) {
-    .mobile-controls {
-        display: none;
-    }
+/* Show mobile controls on all screen sizes */
+.mobile-controls {
+    display: flex !important;
 }
 
 /* Portrait orientation adjustments */

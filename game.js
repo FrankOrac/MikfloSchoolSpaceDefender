@@ -151,15 +151,54 @@ function initBackgroundMusic() {
     }
 }
 
+// Welcome Audio System
+function createWelcomeAudio() {
+    // Create a placeholder welcome message using speech synthesis
+    if ('speechSynthesis' in window) {
+        const welcomeMessage = `Welcome to Space Defender! Destroy bad habits and build good character. Enter your name and start your mission, student of Mikflo Schools!`;
+        const utterance = new SpeechSynthesisUtterance(welcomeMessage);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.1;
+        utterance.volume = 0.8;
+        
+        // Try to use a child-friendly voice
+        const voices = speechSynthesis.getVoices();
+        const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.name.includes('Woman'));
+        if (femaleVoice) utterance.voice = femaleVoice;
+        
+        return utterance;
+    }
+    return null;
+}
+
+let welcomeAudio = null;
+
+function playWelcomeAudio() {
+    if (welcomeAudio) {
+        // Stop any currently playing speech
+        speechSynthesis.cancel();
+        // Play the welcome message
+        speechSynthesis.speak(welcomeAudio);
+        
+        // Visual feedback
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = '🔊 PLAYING...';
+        button.disabled = true;
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+        }, 8000); // Approximate duration of the message
+    } else {
+        alert('Welcome audio not available in this browser. Please use a modern browser with speech synthesis support.');
+    }
+}
+
 // Initialize game
 function init() {
-    // Load high scores
-    const saved = localStorage.getItem('mikfloSpaceDefenderScores');
-    if (saved) {
-        highScores = JSON.parse(saved);
-    } else {
-        highScores = [];
-    }
+    // Create welcome audio
+    welcomeAudio = createWelcomeAudio();
     
     // Initialize background music
     initBackgroundMusic();
@@ -1167,30 +1206,15 @@ function updateUI() {
 function gameOver() {
     gameRunning = false;
     
-    // Save high score with player name and level
+    // Simple session-based high score (no database storage)
+    const sessionHighScore = Math.max(score, sessionStorage.getItem('sessionHighScore') || 0);
+    sessionStorage.setItem('sessionHighScore', sessionHighScore);
+    
     const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
     const currentLevelName = educationalLevels[levelIndex];
     
-    const newScore = {
-        name: currentPlayerName,
-        score: score,
-        level: level,
-        levelName: currentLevelName,
-        date: new Date().toLocaleDateString()
-    };
-    
-    // Add to high scores and sort
-    highScores.push(newScore);
-    highScores.sort((a, b) => b.score - a.score);
-    highScores = highScores.slice(0, 10); // Keep top 10
-    
-    // Save to localStorage
-    localStorage.setItem('mikfloSpaceDefenderScores', JSON.stringify(highScores));
-    
-    // Check if it's a new high score
-    const isNewHighScore = highScores[0].score === score && highScores[0].name === currentPlayerName;
-    
-    if (isNewHighScore) {
+    // Check if it's a new session high score
+    if (score >= sessionHighScore) {
         document.getElementById('highScoreMessage').style.display = 'block';
     } else {
         document.getElementById('highScoreMessage').style.display = 'none';
@@ -1208,7 +1232,6 @@ function gameOver() {
         motivationalMsg.textContent = `${currentPlayerName}, ${message}`;
     }
     
-    updateHighScoresDisplay();
     document.getElementById('gameOverScreen').style.display = 'flex';
 }
 
@@ -1237,31 +1260,24 @@ function updateHighScoresDisplay() {
     const highScoresList = document.getElementById('highScoresList');
     if (!highScoresList) return;
     
-    if (highScores.length === 0) {
-        highScoresList.innerHTML = '<div style="color: #888; text-align: center;">No scores yet. Be the first to play!</div>';
-        return;
-    }
+    const sessionHighScore = sessionStorage.getItem('sessionHighScore') || 0;
     
-    let html = '<div style="text-align: center; margin-bottom: 20px; color: #00ff88; font-weight: bold;">🏆 TOP STUDENTS 🏆</div>';
+    let html = '<div style="text-align: center; margin-bottom: 20px; color: #00ff88; font-weight: bold;">🏆 SESSION BEST 🏆</div>';
     
-    highScores.forEach((score, index) => {
-        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
-        const color = index === 0 ? '#ffff00' : index === 1 ? '#c0c0c0' : index === 2 ? '#cd7f32' : '#00ff88';
-        
+    if (sessionHighScore > 0) {
         html += `
-            <div style="margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; border-left: 4px solid ${color};">
-                <div style="color: ${color}; font-size: 1.1em; font-weight: bold;">
-                    ${medal} ${score.name}
+            <div style="margin: 10px 0; padding: 20px; background: rgba(0,255,136,0.1); border-radius: 10px; border: 2px solid #00ff88;">
+                <div style="color: #ffff00; font-size: 1.5em; font-weight: bold; text-align: center;">
+                    🥇 Best Score: ${sessionHighScore}
                 </div>
-                <div style="color: #0099ff; margin: 5px 0;">
-                    Class: ${score.levelName} | Score: ${score.score}
-                </div>
-                <div style="color: #888; font-size: 0.9em;">
-                    ${score.date}
+                <div style="color: #00ff88; text-align: center; margin-top: 10px;">
+                    Keep playing to beat your record!
                 </div>
             </div>
         `;
-    });
+    } else {
+        html += '<div style="color: #888; text-align: center;">Play the game to set your first score!</div>';
+    }
     
     highScoresList.innerHTML = html;
 }

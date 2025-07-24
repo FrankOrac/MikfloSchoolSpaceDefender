@@ -2,7 +2,7 @@
 
 ## Overview
 
-Space Defender is an educational browser-based space shooter game designed for Mikflo Schools. Players destroy "bad habit" asteroids while progressing through educational levels from Montessori to SS3. The game combines entertainment with character building, featuring personalized scoring, motivational messages, and comprehensive school branding.
+Space Defender is an educational browser-based space shooter game developed by MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB. Players destroy "bad habit" asteroids while progressing through educational levels from Montessori to SS3. The game combines entertainment with character building, featuring always-visible mobile controls, voice welcome messages, session-based scoring, and comprehensive school branding.
 
 ## User Preferences
 
@@ -34,11 +34,12 @@ Preferred communication style: Simple, everyday language.
 - **Educational Level System**: Progress from Montessori through Basic 1-9 to SS1-SS3
 - **Personalized Experience**: Username input with customized scoring and messages  
 - **Character Building Focus**: Motivational messages when destroying bad habits
-- **School Branding**: Mikflo Schools logos and branding throughout the game
+- **STEAM HUB Branding**: MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB branding throughout
+- **Voice Welcome System**: Placeholder speech synthesis (ready for student voice recordings)
+- **Always-Visible Controls**: On-screen D-pad and buttons available on all screen sizes
+- **Session-Based Scoring**: Simple session scores without database storage
 - **Sound Effects**: Audio feedback for all game actions using Web Audio API
-- **Progressive Difficulty**: Level-based spawning with educational context
-- **Power-up System**: Rapid fire, shields, and multi-shot with educational themes
-- **High Score System**: Top 10 leaderboard with student names and class levels
+- **Asset Organization**: Dedicated folders for images and sounds ready for custom content
 
 ### Data Flow
 
@@ -50,9 +51,10 @@ Preferred communication style: Simple, everyday language.
 
 ### External Dependencies
 
-- **Browser APIs**: Canvas 2D API, localStorage, DOM manipulation
+- **Browser APIs**: Canvas 2D API, Web Audio API, Speech Synthesis API, sessionStorage
 - **No external libraries**: Pure vanilla JavaScript implementation for maximum compatibility
-- **Local Assets**: All game assets (sprites, sounds) are embedded or generated programmatically
+- **Asset Structure**: Organized folders for images (assets/images/) and sounds (assets/sounds/)
+- **Custom Content Ready**: Placeholder systems ready for school-specific logos, sounds, and student voice recordings
 
 ### Deployment Strategy
 
