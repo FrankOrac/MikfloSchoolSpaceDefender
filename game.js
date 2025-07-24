@@ -58,6 +58,10 @@ let powerUps = [];
 let particles = [];
 let stars = [];
 
+// Preload logo image for watermark
+let logoImage = new Image();
+logoImage.src = 'assets/images/mikflo-logo.png';
+
 // Power-up states
 let rapidFire = false;
 let shield = false;
@@ -1020,13 +1024,23 @@ function draw() {
         ctx.fill();
     }
     
-    // Draw Mikflo Schools watermark
+    // Draw Mikflo Schools watermark with logo
     ctx.save();
-    ctx.globalAlpha = 0.1;
+    ctx.globalAlpha = 0.15;
+    
+    // Draw logo image as watermark
+    if (logoImage.complete) {
+        const logoSize = 80;
+        ctx.drawImage(logoImage, canvas.width / 2 - logoSize / 2, canvas.height / 2 - 60, logoSize, logoSize);
+    }
+    
+    // Draw text watermark below logo
     ctx.fillStyle = '#00ff88';
-    ctx.font = 'bold 24px Arial';
+    ctx.font = 'bold 20px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('MIKFLO SCHOOLS', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('MIKFLO SCHOOLS', canvas.width / 2, canvas.height / 2 + 40);
+    ctx.font = 'bold 12px Arial';
+    ctx.fillText('TECHNOLOGY DIVISION - STEAM HUB', canvas.width / 2, canvas.height / 2 + 60);
     ctx.restore();
     
     if (gameRunning) {
@@ -1390,6 +1404,32 @@ document.addEventListener('click', function() {
 }, { once: true });
 
 // Developer slide functions
+function updateDeveloperSlide(deltaTime) {
+    developerSlideTimer += deltaTime;
+    
+    // Show developer slide every 30 seconds during gameplay
+    if (developerSlideTimer >= developerSlideInterval && !developerSlideShowing) {
+        showDeveloperSlide();
+        developerSlideTimer = 0;
+    }
+}
+
+function showDeveloperSlide() {
+    if (developerSlideShowing) return;
+    
+    developerSlideShowing = true;
+    const slideElement = document.getElementById('developerSlide');
+    if (slideElement) {
+        slideElement.style.display = 'block';
+        
+        // Hide the slide after 5 seconds
+        setTimeout(() => {
+            slideElement.style.display = 'none';
+            developerSlideShowing = false;
+        }, 5000);
+    }
+}
+
 function updateDeveloperSlide(deltaTime) {
     developerSlideTimer += deltaTime;
     
