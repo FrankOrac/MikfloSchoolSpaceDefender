@@ -40,13 +40,7 @@
             </p>
             <p style="margin-bottom: 20px;">Destroy Bad Habits & Build Character!</p>
             
-            <div class="username-input">
-                <label for="playerName">Enter Your Name:</label>
-                <input type="text" id="playerName" placeholder="Student Name" maxlength="20">
-            </div>
-            
-            <button class="menu-button" onclick="playWelcomeAudio()">🔊 PLAY WELCOME</button>
-            <button class="menu-button" onclick="startGame()">START GAME</button>
+            <button class="menu-button" onclick="showUsernameInput()">START GAME</button>
             <button class="menu-button" onclick="showInstructions()">INSTRUCTIONS</button>
             <button class="menu-button" onclick="showHighScores()">HIGH SCORES</button>
         </div>
@@ -105,6 +99,33 @@
                 <p>• Montessori → Basic 1-9 → SS1-3</p>
                 <p>• Each level brings new challenges!</p>
             </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <!-- Username Input Screen -->
+        <div class="menu-screen" id="usernameScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
+            <h1>STUDENT REGISTRATION</h1>
+            <p style="font-size: 0.8em; color: #888; margin-bottom: 20px;">
+                MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
+            </p>
+            
+            <div class="username-input-container">
+                <label for="playerName" style="color: #00ff88; font-size: 1.2em; margin-bottom: 15px; display: block;">
+                    Enter Your Name:
+                </label>
+                <input type="text" id="playerName" placeholder="Student Name" maxlength="20" 
+                       style="padding: 15px; font-size: 1.1em; border: 2px solid #00ff88; border-radius: 10px; 
+                              background: rgba(0,0,0,0.7); color: #fff; text-align: center; width: 250px; 
+                              margin-bottom: 20px;" onkeypress="if(event.key==='Enter')startGameWithName()">
+            </div>
+            
+            <button class="menu-button" onclick="startGameWithName()">BEGIN MISSION</button>
             <button class="menu-button" onclick="showMenu()">BACK</button>
         </div>
 

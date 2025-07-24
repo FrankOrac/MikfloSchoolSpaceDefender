@@ -174,31 +174,48 @@ function createWelcomeAudio() {
 let welcomeAudio = null;
 
 function playWelcomeAudio() {
-    if (welcomeAudio) {
-        // Stop any currently playing speech
-        speechSynthesis.cancel();
-        // Play the welcome message
-        speechSynthesis.speak(welcomeAudio);
-        
-        // Visual feedback
-        const button = event.target;
-        const originalText = button.textContent;
-        button.textContent = '🔊 PLAYING...';
-        button.disabled = true;
-        
-        setTimeout(() => {
-            button.textContent = originalText;
-            button.disabled = false;
-        }, 8000); // Approximate duration of the message
-    } else {
-        alert('Welcome audio not available in this browser. Please use a modern browser with speech synthesis support.');
+    // Auto-play welcome audio, skip silently if unavailable
+    if (welcomeAudio && 'speechSynthesis' in window) {
+        try {
+            speechSynthesis.cancel();
+            speechSynthesis.speak(welcomeAudio);
+        } catch (e) {
+            // Silently skip if audio fails
+            console.log('Welcome audio skipped - not available');
+        }
     }
+}
+
+function showUsernameInput() {
+    hideAllScreens();
+    document.getElementById('usernameScreen').style.display = 'flex';
+    // Focus on the input field
+    setTimeout(() => {
+        document.getElementById('playerName').focus();
+    }, 100);
+}
+
+function startGameWithName() {
+    const nameInput = document.getElementById('playerName').value.trim();
+    if (nameInput === '') {
+        alert('Please enter your name to continue!');
+        return;
+    }
+    
+    currentPlayerName = nameInput;
+    playerName = nameInput;
+    startGame();
 }
 
 // Initialize game
 function init() {
     // Create welcome audio
     welcomeAudio = createWelcomeAudio();
+    
+    // Auto-play welcome audio when page loads
+    setTimeout(() => {
+        playWelcomeAudio();
+    }, 1000);
     
     // Initialize background music
     initBackgroundMusic();
@@ -1100,28 +1117,29 @@ function drawAsteroids() {
         ctx.font = `bold ${Math.max(8, asteroid.size / 5)}px Arial`;
         ctx.textAlign = 'center';
         
-        // Word wrap for long habit names
-        const words = asteroid.badHabit.split(' ');
-        const maxWidth = asteroid.size * 1.5;
-        let line = '';
-        let y = -5;
-        
-        for (let n = 0; n < words.length; n++) {
-            const testLine = line + words[n] + ' ';
-            const metrics = ctx.measureText(testLine);
-            const testWidth = metrics.width;
+        // Display bad habit name (simplified approach)
+        if (asteroid.badHabit) {
+            const text = asteroid.badHabit;
+            const words = text.split(' ');
             
-            if (testWidth > maxWidth && n > 0) {
-                ctx.strokeText(line, 0, y);
-                ctx.fillText(line, 0, y);
-                line = words[n] + ' ';
-                y += 12;
+            if (words.length === 1) {
+                // Single word - display in center
+                ctx.strokeText(text, 0, 0);
+                ctx.fillText(text, 0, 0);
+            } else if (words.length === 2) {
+                // Two words - display on two lines
+                ctx.strokeText(words[0], 0, -6);
+                ctx.fillText(words[0], 0, -6);
+                ctx.strokeText(words[1], 0, 6);
+                ctx.fillText(words[1], 0, 6);
             } else {
-                line = testLine;
+                // Multiple words - show first two words
+                ctx.strokeText(words[0], 0, -6);
+                ctx.fillText(words[0], 0, -6);
+                ctx.strokeText(words[1], 0, 6);
+                ctx.fillText(words[1], 0, 6);
             }
         }
-        ctx.strokeText(line, 0, y);
-        ctx.fillText(line, 0, y);
         
         ctx.restore();
     }
@@ -1200,7 +1218,7 @@ function updateUI() {
     document.getElementById('score').textContent = score;
     document.getElementById('lives').textContent = lives;
     document.getElementById('level').textContent = level;
-    document.getElementById('displayHighScore').textContent = highScore;
+    updatePlayerDisplay();
 }
 
 function gameOver() {
