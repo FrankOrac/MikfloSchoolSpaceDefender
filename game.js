@@ -30,6 +30,24 @@ const motivationalMessages = [
     'Your character is shining bright!', 'Wonderful progress, keep going!'
 ];
 
+// Positive school values for bullets
+const schoolValues = [
+    'EXCELLENCE', 'INTEGRITY', 'DISCIPLINE', 'RESPECT', 'HARD WORK',
+    'HONESTY', 'TEAMWORK', 'LEADERSHIP', 'CREATIVITY', 'PUNCTUALITY',
+    'GOOD MANNERS', 'STUDY HABITS', 'RESPONSIBILITY', 'KINDNESS', 'FOCUS',
+    'DEDICATION', 'PERSEVERANCE', 'INNOVATION', 'WISDOM', 'CHARACTER',
+    'ACHIEVEMENT', 'PROGRESS', 'SUCCESS', 'GROWTH', 'LEARNING'
+];
+
+// School details for sharing
+const schoolDetails = {
+    name: 'MIKFLO SCHOOLS',
+    division: 'TECHNOLOGY DIVISION - STEAM HUB',
+    address: 'Urora Rd, off Kingdom Hall Road, Uselu, Benin City 301112, Edo State',
+    phone: 'Contact us for quality education',
+    motto: 'Building Excellence in Education'
+};
+
 // Player and Game State
 let playerName = 'Student';
 let currentPlayerName = 'Student';
@@ -95,6 +113,9 @@ let shootTimer = 0;
 let developerSlideTimer = 0;
 let developerSlideInterval = 30000; // Show every 30 seconds
 let developerSlideShowing = false;
+
+// Bullet value counter
+let bulletValueIndex = 0;
 
 // Sound Effect Functions
 function playTone(frequency, duration) {
@@ -965,40 +986,34 @@ function shoot() {
         sounds.shoot(); // Play shooting sound
         
         if (multiShot) {
-            // Triple shot
-            bullets.push({
-                x: player.x - 10,
-                y: player.y,
-                width: 8,
-                height: 15,
-                speed: 10,
-                schoolBranded: true
-            });
-            bullets.push({
-                x: player.x,
-                y: player.y,
-                width: 8,
-                height: 15,
-                speed: 10,
-                schoolBranded: true
-            });
-            bullets.push({
-                x: player.x + 10,
-                y: player.y,
-                width: 8,
-                height: 15,
-                speed: 10,
-                schoolBranded: true
-            });
+            // Triple shot with school values
+            for (let i = 0; i < 3; i++) {
+                const schoolValue = schoolValues[bulletValueIndex % schoolValues.length];
+                bulletValueIndex++;
+                
+                bullets.push({
+                    x: player.x + (i - 1) * 10,
+                    y: player.y,
+                    width: 8,
+                    height: 15,
+                    speed: 10,
+                    schoolBranded: true,
+                    schoolValue: schoolValue
+                });
+            }
         } else {
-            // Single shot
+            // Single shot with school value
+            const schoolValue = schoolValues[bulletValueIndex % schoolValues.length];
+            bulletValueIndex++;
+            
             bullets.push({
                 x: player.x,
                 y: player.y,
                 width: 8,
                 height: 15,
                 speed: 10,
-                schoolBranded: true
+                schoolBranded: true,
+                schoolValue: schoolValue
             });
         }
     }
@@ -1028,19 +1043,19 @@ function draw() {
     ctx.save();
     ctx.globalAlpha = 0.15;
     
-    // Draw logo image as watermark
+    // Draw big logo image as watermark
     if (logoImage.complete) {
-        const logoSize = 80;
-        ctx.drawImage(logoImage, canvas.width / 2 - logoSize / 2, canvas.height / 2 - 60, logoSize, logoSize);
+        const logoSize = 150; // Much bigger logo
+        ctx.drawImage(logoImage, canvas.width / 2 - logoSize / 2, canvas.height / 2 - 80, logoSize, logoSize);
     }
     
     // Draw text watermark below logo
     ctx.fillStyle = '#00ff88';
-    ctx.font = 'bold 20px Arial';
+    ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('MIKFLO SCHOOLS', canvas.width / 2, canvas.height / 2 + 40);
-    ctx.font = 'bold 12px Arial';
-    ctx.fillText('TECHNOLOGY DIVISION - STEAM HUB', canvas.width / 2, canvas.height / 2 + 60);
+    ctx.fillText('MIKFLO SCHOOLS', canvas.width / 2, canvas.height / 2 + 90);
+    ctx.font = 'bold 16px Arial';
+    ctx.fillText('TECHNOLOGY DIVISION - STEAM HUB', canvas.width / 2, canvas.height / 2 + 115);
     ctx.restore();
     
     if (gameRunning) {
@@ -1115,11 +1130,22 @@ function drawBullets() {
             ctx.fillStyle = '#00ff88';
             ctx.fillRect(-4, -7, 8, 15);
             
-            // School logo on bullet
-            ctx.fillStyle = '#0099ff';
-            ctx.font = 'bold 8px Arial';
+            // School value on bullet
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 6px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText('M', 0, 2);
+            if (bullet.schoolValue) {
+                // Split long values to fit on bullet
+                const words = bullet.schoolValue.split(' ');
+                if (words.length === 1) {
+                    ctx.fillText(words[0].substring(0, 8), 0, 2);
+                } else {
+                    ctx.fillText(words[0].substring(0, 4), 0, -2);
+                    ctx.fillText(words[1] ? words[1].substring(0, 4) : '', 0, 6);
+                }
+            } else {
+                ctx.fillText('MIKFLO', 0, 2);
+            }
             
             // Glow effect
             ctx.shadowColor = '#00ff88';
@@ -1295,6 +1321,12 @@ function gameOver() {
         document.getElementById('highScoreMessage').style.display = 'none';
     }
     
+    // Show share score option for high scores (above 1000)
+    const shareSection = document.getElementById('shareScoreSection');
+    if (shareSection) {
+        shareSection.style.display = score >= 1000 ? 'block' : 'none';
+    }
+    
     // Update display
     document.getElementById('finalScore').textContent = score;
     document.getElementById('playerNameDisplay').textContent = currentPlayerName;
@@ -1454,6 +1486,66 @@ function showDeveloperSlide() {
             developerSlideShowing = false;
         }, 5000);
     }
+}
+
+function shareScore() {
+    const shareText = `🎮 I just scored ${score} points in Space Defender! 
+🚀 Playing the educational game by ${schoolDetails.name}
+📚 ${schoolDetails.division}
+🏫 Quality Education at ${schoolDetails.address}
+💯 Building Excellence through Character Development!
+🎯 Try the game and join our school for quality education!
+
+#MikfloSchools #QualityEducation #CharacterBuilding #SpaceDefender #BeninCity #EduTech`;
+
+    if (navigator.share) {
+        // Use native sharing if available
+        navigator.share({
+            title: 'My Space Defender Score - Mikflo Schools',
+            text: shareText,
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        // Fallback: Copy to clipboard
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert('Score and school details copied to clipboard! Share it on social media to advertise our school.');
+            }).catch(() => {
+                // Show text for manual copying
+                showShareText(shareText);
+            });
+        } else {
+            showShareText(shareText);
+        }
+    }
+}
+
+function showShareText(text) {
+    const shareModal = document.createElement('div');
+    shareModal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.9); z-index: 5000; display: flex;
+        justify-content: center; align-items: center; padding: 20px;
+    `;
+    
+    const shareContent = document.createElement('div');
+    shareContent.style.cssText = `
+        background: #1a1a2e; border: 2px solid #00ff88; border-radius: 15px;
+        padding: 20px; max-width: 500px; color: white; text-align: center;
+    `;
+    
+    shareContent.innerHTML = `
+        <h3 style="color: #00ff88; margin-bottom: 15px;">Share Your Score & Advertise Our School!</h3>
+        <textarea readonly style="width: 100%; height: 200px; background: #000; color: #fff; 
+                 border: 1px solid #00ff88; border-radius: 5px; padding: 10px; font-size: 12px;">${text}</textarea>
+        <br><br>
+        <button onclick="this.closest('[style*=fixed]').remove()" 
+                style="background: #00ff88; color: #000; border: none; padding: 10px 20px; 
+                       border-radius: 5px; font-weight: bold; cursor: pointer;">Close</button>
+    `;
+    
+    shareModal.appendChild(shareContent);
+    document.body.appendChild(shareModal);
 }
 
 // Start the game when the page loads

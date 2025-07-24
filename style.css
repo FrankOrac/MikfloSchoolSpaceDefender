@@ -226,41 +226,41 @@ body {
   line-height: 1.4;
 }
 
-/* Developer slide */
+/* Developer slide - moved to top */
 .developer-slide {
   position: absolute;
-  top: 50%;
+  top: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   background: linear-gradient(45deg, rgba(0, 255, 136, 0.95), rgba(0, 153, 255, 0.95));
   border: 3px solid #00ff88;
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 15px;
+  padding: 15px 25px;
   text-align: center;
   z-index: 3000;
   box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
-  animation: slideIn 1s ease-out, slideOut 1s ease-out 4s;
+  animation: slideInTop 1s ease-out, slideOutTop 1s ease-out 4s;
 }
 
-@keyframes slideIn {
+@keyframes slideInTop {
   from {
     opacity: 0;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -100%);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
   }
 }
 
-@keyframes slideOut {
+@keyframes slideOutTop {
   from {
     opacity: 1;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
   }
   to {
     opacity: 0;
-    transform: translate(-50%, -30%);
+    transform: translate(-50%, -100%);
   }
 }
 
