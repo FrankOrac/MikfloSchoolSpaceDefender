@@ -303,9 +303,9 @@ body {
 /* Mobile controls - Always visible */
 .mobile-controls {
   position: absolute;
-  bottom: 15px;
-  left: 15px;
-  right: 15px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
   display: flex !important;
   justify-content: space-between;
   align-items: flex-end;
@@ -511,9 +511,9 @@ body {
   }
 
   .mobile-controls {
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
   }
   
   .dpad {
@@ -526,17 +526,37 @@ body {
     height: 50px;
     font-size: 8px;
   }
+  
+  .game-ui {
+    font-size: 11px;
+    padding: 8px;
+    top: 5px;
+    left: 5px;
+  }
 }
 
 /* Portrait orientation adjustments */
 @media (orientation: portrait) and (max-width: 768px) {
   .mobile-controls {
-    bottom: 10px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
   }
 
   .game-ui {
-    top: 10px;
-    left: 10px;
-    font-size: 11px;
+    top: 5px;
+    left: 5px;
+    font-size: 10px;
+  }
+  
+  .dpad {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .action-btn {
+    width: 45px;
+    height: 45px;
+    font-size: 7px;
   }
 }

@@ -1520,18 +1520,48 @@ function generateScoreImage() {
     ctx.textAlign = 'center';
     ctx.fillText('🚀 SPACE DEFENDER', canvas.width / 2, 80);
     
-    // School logo placeholder (since we can't load external images in canvas easily)
-    ctx.fillStyle = '#00ff88';
-    ctx.fillRect(canvas.width / 2 - 60, 100, 120, 120);
-    ctx.fillStyle = '#000';
-    ctx.font = 'bold 24px Arial';
-    ctx.fillText('MIKFLO', canvas.width / 2, 150);
-    ctx.font = 'bold 16px Arial';
-    ctx.fillText('SCHOOL', canvas.width / 2, 180);
+    // Load and draw the actual school logo
+    const logoImg = new Image();
+    logoImg.crossOrigin = 'anonymous';
+    logoImg.onload = function() {
+        // Draw the actual logo
+        const logoSize = 120;
+        ctx.save();
+        ctx.drawImage(logoImg, canvas.width / 2 - logoSize / 2, 100, logoSize, logoSize);
+        ctx.restore();
+        
+        // Add logo border
+        ctx.strokeStyle = '#00ff88';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(canvas.width / 2 - logoSize / 2, 100, logoSize, logoSize);
+        
+        // Continue with the rest of the image generation
+        finishScoreImage(canvas, ctx);
+    };
     
+    logoImg.onerror = function() {
+        // Fallback to text logo if image fails to load
+        ctx.fillStyle = '#00ff88';
+        ctx.fillRect(canvas.width / 2 - 60, 100, 120, 120);
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 24px Arial';
+        ctx.fillText('MIKFLO', canvas.width / 2, 150);
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('SCHOOL', canvas.width / 2, 180);
+        
+        // Continue with the rest of the image generation
+        finishScoreImage(canvas, ctx);
+    };
+    
+    // Try to load the logo
+    logoImg.src = 'assets/images/mikflo-logo.png';
+}
+
+function finishScoreImage(canvas, ctx) {
     // Score section
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 36px Arial';
+    ctx.textAlign = 'center';
     ctx.fillText(`SCORE: ${score}`, canvas.width / 2, 280);
     
     ctx.font = 'bold 28px Arial';

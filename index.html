@@ -114,8 +114,8 @@
             <div class="logo-subtext">SCHOOL</div>
           </div>
         </div>
-        <h1>GAME OVER</h1>
-        <p style="font-size: 0.8em; color: #888; margin-bottom: 15px">
+        <h1 style="font-size: 2em; margin-bottom: 8px;">GAME OVER</h1>
+        <p style="font-size: 0.7em; color: #888; margin-bottom: 10px">
           MIKFLO SCHOOL TECHNOLOGY DIVISION - STEAM HUB
         </p>
 
@@ -131,35 +131,37 @@
           🏆 NEW SESSION HIGH SCORE! 🏆
         </div>
 
-        <div style="margin: 20px 0">
-          <div style="color: #00ff88; font-size: 1.1em">
+        <div style="margin: 15px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; max-width: 500px;">
+          <div style="color: #00ff88; font-size: 1.1em; text-align: center; min-width: 150px;">
             Player: <span id="playerNameDisplay"></span>
           </div>
-          <div style="color: #0099ff; font-size: 1.3em">
+          <div style="color: #0099ff; font-size: 1.3em; text-align: center; min-width: 150px;">
             Final Score: <span id="finalScore">0</span>
           </div>
-          <div style="color: #ffaa00">
+          <div style="color: #ffaa00; text-align: center; min-width: 150px;">
             Level Reached: <span id="levelNameDisplay"></span>
           </div>
         </div>
 
         <div
           id="motivationalMessage"
-          style="color: #00ff88; margin: 15px 0; font-style: italic"
+          style="color: #00ff88; margin: 10px 0; font-style: italic; font-size: 0.9em;"
         ></div>
 
         <!-- Score Sharing Section -->
-        <div id="shareScoreSection" style="margin: 20px 0; display: none;">
-          <div style="color: #ffff00; font-size: 1.1em; margin-bottom: 10px;">
+        <div id="shareScoreSection" style="margin: 15px 0; display: none;">
+          <div style="color: #ffff00; font-size: 1em; margin-bottom: 8px;">
             🎉 Great Score! Share it to promote our school! 🎉
           </div>
-          <button class="menu-button" onclick="generateScoreImage()" style="background: linear-gradient(45deg, #ffaa00, #ff6600);">
+          <button class="menu-button" onclick="generateScoreImage()" style="background: linear-gradient(45deg, #ffaa00, #ff6600); padding: 10px 20px; font-size: 0.9em;">
             📢 SHARE SCORE
           </button>
         </div>
 
-        <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
-        <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px;">
+          <button class="menu-button" onclick="restartGame()" style="padding: 10px 20px; font-size: 0.9em;">PLAY AGAIN</button>
+          <button class="menu-button" onclick="showMenu()" style="padding: 10px 20px; font-size: 0.9em;">MAIN MENU</button>
+        </div>
       </div>
 
       <!-- Instructions Screen -->
