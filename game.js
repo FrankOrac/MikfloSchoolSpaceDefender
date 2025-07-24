@@ -121,6 +121,21 @@ let developerSlideShowing = false;
 // Bullet value counter
 let bulletValueIndex = 0;
 
+// Responsive canvas function
+function resizeCanvas() {
+    const maxWidth = Math.min(800, window.innerWidth - 20);
+    const maxHeight = Math.min(600, window.innerHeight - 80);
+    
+    canvas.width = maxWidth;
+    canvas.height = maxHeight;
+    
+    // Update player position if needed
+    if (player) {
+        player.x = Math.min(player.x, canvas.width - player.width);
+        player.y = Math.min(player.y, canvas.height - player.height);
+    }
+}
+
 // Sound Effect Functions
 function playTone(frequency, duration) {
     try {
@@ -292,6 +307,13 @@ function showMenu() {
 
 // Initialize game
 function init() {
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
+    
+    // Set responsive canvas size
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
     // Auto-play welcome audio after 1 second
     setTimeout(playWelcomeAudio, 1000);
     
