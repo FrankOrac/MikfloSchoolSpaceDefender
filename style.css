@@ -303,9 +303,9 @@ body {
 /* Mobile controls - Always visible */
 .mobile-controls {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
   display: flex !important;
   justify-content: space-between;
   align-items: flex-end;
@@ -388,22 +388,26 @@ body {
 .action-btn {
   width: 60px;
   height: 60px;
-  background: rgba(255, 255, 0, 0.8);
-  border: 2px solid #ffff00;
+  background: linear-gradient(45deg, rgba(0, 255, 136, 0.9), rgba(0, 153, 255, 0.9));
+  border: 2px solid #00ff88;
   border-radius: 50%;
   color: #000;
-  font-size: 24px;
+  font-size: 10px;
+  font-weight: bold;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   user-select: none;
   transition: all 0.2s ease;
+  text-align: center;
+  line-height: 1.1;
 }
 
 .action-btn:active {
-  background: rgba(255, 255, 0, 1);
+  background: linear-gradient(45deg, rgba(0, 255, 136, 1), rgba(0, 153, 255, 1));
   transform: scale(0.9);
+  box-shadow: 0 0 15px #00ff88;
 }
 
 .pause-btn {
@@ -510,6 +514,17 @@ body {
     bottom: 15px;
     left: 15px;
     right: 15px;
+  }
+  
+  .dpad {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .action-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 8px;
   }
 }
 

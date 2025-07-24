@@ -1492,76 +1492,203 @@ function showDeveloperSlide() {
     }
 }
 
-function shareScore() {
-    const shareText = `🎮 I just scored ${score} points in Space Defender! 
-🚀 Playing the educational game by ${schoolDetails.name}
-📚 ${schoolDetails.division}
-
-🏫 ${schoolDetails.name} - ${schoolDetails.founded}
-📍 ${schoolDetails.address}
-📞 ${schoolDetails.phone}
-📧 ${schoolDetails.email}
-
-🎓 SERVICES OFFERED:
-${schoolDetails.services}
-
-📚 CLASSES AVAILABLE:
-${schoolDetails.classes}
-
-💯 Building Excellence through Character Development!
-🎯 Try the game and join our school for quality education!
-
-#MikfloSchool #QualityEducation #CharacterBuilding #SpaceDefender #BeninCity #EduTech #HybridLearning #CodingClasses`;
-
-    if (navigator.share) {
-        // Use native sharing if available
-        navigator.share({
-            title: 'My Space Defender Score - Mikflo Schools',
-            text: shareText,
-            url: window.location.href
-        }).catch(console.error);
-    } else {
-        // Fallback: Copy to clipboard
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(shareText).then(() => {
-                alert('Score and school details copied to clipboard! Share it on social media to advertise our school.');
-            }).catch(() => {
-                // Show text for manual copying
-                showShareText(shareText);
-            });
+function generateScoreImage() {
+    // Create canvas for score card
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas dimensions
+    canvas.width = 800;
+    canvas.height = 1000;
+    
+    // Background gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#1a1a2e');
+    gradient.addColorStop(0.5, '#16213e');
+    gradient.addColorStop(1, '#0f3460');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Border
+    ctx.strokeStyle = '#00ff88';
+    ctx.lineWidth = 8;
+    ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+    
+    // Title
+    ctx.fillStyle = '#00ff88';
+    ctx.font = 'bold 48px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('🚀 SPACE DEFENDER', canvas.width / 2, 80);
+    
+    // School logo placeholder (since we can't load external images in canvas easily)
+    ctx.fillStyle = '#00ff88';
+    ctx.fillRect(canvas.width / 2 - 60, 100, 120, 120);
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 24px Arial';
+    ctx.fillText('MIKFLO', canvas.width / 2, 150);
+    ctx.font = 'bold 16px Arial';
+    ctx.fillText('SCHOOL', canvas.width / 2, 180);
+    
+    // Score section
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 36px Arial';
+    ctx.fillText(`SCORE: ${score}`, canvas.width / 2, 280);
+    
+    ctx.font = 'bold 28px Arial';
+    ctx.fillStyle = '#00ff88';
+    ctx.fillText(`Player: ${currentPlayerName}`, canvas.width / 2, 320);
+    
+    const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
+    const currentLevelName = educationalLevels[levelIndex];
+    ctx.fillText(`Level: ${currentLevelName}`, canvas.width / 2, 360);
+    
+    // School information
+    ctx.fillStyle = '#ffff00';
+    ctx.font = 'bold 32px Arial';
+    ctx.fillText(schoolDetails.name, canvas.width / 2, 420);
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 20px Arial';
+    ctx.fillText(schoolDetails.founded, canvas.width / 2, 450);
+    
+    // Contact info
+    ctx.font = '18px Arial';
+    ctx.fillStyle = '#00ff88';
+    const lines = [
+        schoolDetails.address,
+        `📞 ${schoolDetails.phone}`,
+        `📧 ${schoolDetails.email}`,
+        '',
+        '🎓 SERVICES OFFERED:',
+        schoolDetails.services,
+        '',
+        '📚 CLASSES AVAILABLE:',
+        schoolDetails.classes,
+        '',
+        '💯 Building Excellence through Character Development!',
+        '🎯 Join our school for quality education!'
+    ];
+    
+    let y = 490;
+    ctx.textAlign = 'center';
+    lines.forEach(line => {
+        if (line.includes('SERVICES') || line.includes('CLASSES')) {
+            ctx.fillStyle = '#ffff00';
+            ctx.font = 'bold 20px Arial';
+        } else if (line === '') {
+            y += 10;
+            return;
         } else {
-            showShareText(shareText);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '16px Arial';
         }
-    }
+        
+        // Split long lines
+        if (line.length > 50) {
+            const words = line.split(' ');
+            let currentLine = '';
+            words.forEach(word => {
+                const testLine = currentLine + word + ' ';
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > canvas.width - 40 && currentLine !== '') {
+                    ctx.fillText(currentLine.trim(), canvas.width / 2, y);
+                    y += 25;
+                    currentLine = word + ' ';
+                } else {
+                    currentLine = testLine;
+                }
+            });
+            if (currentLine.trim() !== '') {
+                ctx.fillText(currentLine.trim(), canvas.width / 2, y);
+            }
+        } else {
+            ctx.fillText(line, canvas.width / 2, y);
+        }
+        y += 25;
+    });
+    
+    // Hashtags
+    ctx.fillStyle = '#0099ff';
+    ctx.font = 'bold 14px Arial';
+    ctx.fillText('#MikfloSchool #QualityEducation #SpaceDefender #BeninCity', canvas.width / 2, y + 20);
+    
+    // Show the generated image
+    showScoreImage(canvas);
 }
 
-function showShareText(text) {
-    const shareModal = document.createElement('div');
-    shareModal.style.cssText = `
+function showScoreImage(canvas) {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.9); z-index: 5000; display: flex;
-        justify-content: center; align-items: center; padding: 20px;
+        background: rgba(0,0,0,0.95); z-index: 5000; display: flex;
+        flex-direction: column; justify-content: center; align-items: center;
+        padding: 20px; overflow: auto;
     `;
     
-    const shareContent = document.createElement('div');
-    shareContent.style.cssText = `
-        background: #1a1a2e; border: 2px solid #00ff88; border-radius: 15px;
-        padding: 20px; max-width: 500px; color: white; text-align: center;
+    const img = document.createElement('img');
+    img.src = canvas.toDataURL();
+    img.style.cssText = `
+        max-width: 90%; max-height: 70%; border: 2px solid #00ff88;
+        border-radius: 10px; background: white;
     `;
     
-    shareContent.innerHTML = `
-        <h3 style="color: #00ff88; margin-bottom: 15px;">Share Your Score & Advertise Our School!</h3>
-        <textarea readonly style="width: 100%; height: 200px; background: #000; color: #fff; 
-                 border: 1px solid #00ff88; border-radius: 5px; padding: 10px; font-size: 12px;">${text}</textarea>
-        <br><br>
-        <button onclick="this.closest('[style*=fixed]').remove()" 
-                style="background: #00ff88; color: #000; border: none; padding: 10px 20px; 
-                       border-radius: 5px; font-weight: bold; cursor: pointer;">Close</button>
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.cssText = `
+        display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;
+        justify-content: center;
     `;
     
-    shareModal.appendChild(shareContent);
-    document.body.appendChild(shareModal);
+    const downloadBtn = document.createElement('button');
+    downloadBtn.textContent = 'DOWNLOAD IMAGE';
+    downloadBtn.style.cssText = `
+        background: #00ff88; color: #000; border: none; padding: 12px 20px;
+        border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
+    `;
+    downloadBtn.onclick = () => {
+        const link = document.createElement('a');
+        link.download = `mikflo-space-defender-score-${score}.png`;
+        link.href = canvas.toDataURL();
+        link.click();
+    };
+    
+    const shareBtn = document.createElement('button');
+    shareBtn.textContent = 'SHARE IMAGE';
+    shareBtn.style.cssText = `
+        background: #0099ff; color: #000; border: none; padding: 12px 20px;
+        border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
+    `;
+    shareBtn.onclick = () => {
+        canvas.toBlob(blob => {
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'score.png', { type: 'image/png' })] })) {
+                navigator.share({
+                    title: 'My Space Defender Score - Mikflo School',
+                    text: `I scored ${score} points! Join Mikflo School for quality education.`,
+                    files: [new File([blob], 'mikflo-score.png', { type: 'image/png' })]
+                }).catch(console.error);
+            } else {
+                alert('Image ready! Use the download button to save and share manually.');
+            }
+        });
+    };
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = 'CLOSE';
+    closeBtn.style.cssText = `
+        background: #ff4444; color: #fff; border: none; padding: 12px 20px;
+        border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px;
+    `;
+    closeBtn.onclick = () => modal.remove();
+    
+    buttonContainer.appendChild(downloadBtn);
+    buttonContainer.appendChild(shareBtn);
+    buttonContainer.appendChild(closeBtn);
+    
+    modal.appendChild(img);
+    modal.appendChild(buttonContainer);
+    document.body.appendChild(modal);
 }
+
+
 
 // Start the game when the page loads
 document.addEventListener('DOMContentLoaded', init);
