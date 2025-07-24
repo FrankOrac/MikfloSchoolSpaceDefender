@@ -5,8 +5,8 @@
 // ========================================
 
 // Game Canvas
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+let canvas;
+let ctx;
 
 // Educational Game Data
 const badHabits = [
