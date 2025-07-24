@@ -41,11 +41,15 @@ const schoolValues = [
 
 // School details for sharing
 const schoolDetails = {
-    name: 'MIKFLO SCHOOLS',
+    name: 'MIKFLO SCHOOL',
     division: 'TECHNOLOGY DIVISION - STEAM HUB',
-    address: 'Urora Rd, off Kingdom Hall Road, Uselu, Benin City 301112, Edo State',
-    phone: 'Contact us for quality education',
-    motto: 'Building Excellence in Education'
+    address: 'Off Kingdom Hall Road, Urora After Aduwawa Benin Alche Road, Benin City, Nigeria',
+    phone: '0704 530 3778, 07041748346',
+    email: 'mikfoschools2004@gmail.com',
+    founded: 'Founded 2004',
+    services: 'Hybrid Learning, Coding Classes, Power Class, Foundation Class, Adult Literacy Class',
+    classes: 'Reception, Montessori, Pre-Basic 1-3, Basic 1-9, SS1-3',
+    motto: 'Quality Education Since 2004'
 };
 
 // Player and Game State
@@ -1053,7 +1057,7 @@ function draw() {
     ctx.fillStyle = '#00ff88';
     ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('MIKFLO SCHOOLS', canvas.width / 2, canvas.height / 2 + 90);
+    ctx.fillText('MIKFLO SCHOOL', canvas.width / 2, canvas.height / 2 + 90);
     ctx.font = 'bold 16px Arial';
     ctx.fillText('TECHNOLOGY DIVISION - STEAM HUB', canvas.width / 2, canvas.height / 2 + 115);
     ctx.restore();
@@ -1492,11 +1496,22 @@ function shareScore() {
     const shareText = `🎮 I just scored ${score} points in Space Defender! 
 🚀 Playing the educational game by ${schoolDetails.name}
 📚 ${schoolDetails.division}
-🏫 Quality Education at ${schoolDetails.address}
+
+🏫 ${schoolDetails.name} - ${schoolDetails.founded}
+📍 ${schoolDetails.address}
+📞 ${schoolDetails.phone}
+📧 ${schoolDetails.email}
+
+🎓 SERVICES OFFERED:
+${schoolDetails.services}
+
+📚 CLASSES AVAILABLE:
+${schoolDetails.classes}
+
 💯 Building Excellence through Character Development!
 🎯 Try the game and join our school for quality education!
 
-#MikfloSchools #QualityEducation #CharacterBuilding #SpaceDefender #BeninCity #EduTech`;
+#MikfloSchool #QualityEducation #CharacterBuilding #SpaceDefender #BeninCity #EduTech #HybridLearning #CodingClasses`;
 
     if (navigator.share) {
         // Use native sharing if available
