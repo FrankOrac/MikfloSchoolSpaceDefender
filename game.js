@@ -1,15 +1,21 @@
-// Game variables
+// ========================================
+// MIKFLO SCHOOLS SPACE DEFENDER GAME
+// Educational Character Building Game
+// Developed by MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
+// ========================================
+
+// Game Canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Educational Game Data
 const badHabits = [
-    'FAILURE', 'LATE COMING', 'LATE FEES PAYMENT', 'BULLYING', 'LAZINESS', 
-    'BAD LANGUAGE', 'NOISE MAKING', 'FIGHTING', 'LYING', 'CHEATING', 
-    'EXAM MALPRACTICE', 'DISRESPECT', 'STEALING', 'GOSSIPING', 'RUDENESS',
-    'PROCRASTINATION', 'DISOBEDIENCE', 'JEALOUSY', 'ANGER', 'HATRED',
-    'GREED', 'PRIDE', 'IMPATIENCE', 'SELFISHNESS', 'BACKBITING',
-    'TRUANCY', 'VANDALISM', 'SUBSTANCE ABUSE', 'CYBERBULLYING', 'NEGATIVITY'
+    'FAILURE', 'LATE COMING', 'BULLYING', 'LAZINESS', 'BAD LANGUAGE', 
+    'NOISE MAKING', 'FIGHTING', 'LYING', 'CHEATING', 'EXAM MALPRACTICE', 
+    'DISRESPECT', 'STEALING', 'GOSSIPING', 'RUDENESS', 'PROCRASTINATION', 
+    'DISOBEDIENCE', 'JEALOUSY', 'ANGER', 'HATRED', 'GREED', 'PRIDE', 
+    'IMPATIENCE', 'SELFISHNESS', 'BACKBITING', 'TRUANCY', 'VANDALISM', 
+    'SUBSTANCE ABUSE', 'CYBERBULLYING', 'NEGATIVITY', 'BAD ATTITUDE'
 ];
 
 const educationalLevels = [
@@ -19,8 +25,8 @@ const educationalLevels = [
 
 const motivationalMessages = [
     'Excellent character building!', 'Great job fighting bad habits!', 
-    'You\'re becoming a better student!', 'Keep up the good work!',
-    'Outstanding behavior improvement!', 'You\'re setting a great example!',
+    'You are becoming a better student!', 'Keep up the good work!',
+    'Outstanding behavior improvement!', 'You are setting a great example!',
     'Your character is shining bright!', 'Wonderful progress, keep going!'
 ];
 
@@ -207,15 +213,46 @@ function startGameWithName() {
     startGame();
 }
 
+// Auto-play welcome audio when page loads (skip if unavailable)
+function playWelcomeAudio() {
+    if ('speechSynthesis' in window) {
+        try {
+            const welcomeMessage = 'Welcome to Space Defender! Destroy bad habits and build good character. Enter your name and start your mission, student of Mikflo Schools!';
+            const utterance = new SpeechSynthesisUtterance(welcomeMessage);
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            utterance.volume = 0.8;
+            speechSynthesis.speak(utterance);
+        } catch (e) {
+            console.log('Welcome audio skipped - not available');
+        }
+    }
+}
+
+// Username input functions
+function showUsernameInput() {
+    hideAllScreens();
+    document.getElementById('usernameScreen').style.display = 'flex';
+    setTimeout(() => {
+        document.getElementById('playerName').focus();
+    }, 100);
+}
+
+function startGameWithName() {
+    const nameInput = document.getElementById('playerName').value.trim();
+    if (nameInput === '') {
+        alert('Please enter your name to continue!');
+        return;
+    }
+    currentPlayerName = nameInput;
+    playerName = nameInput;
+    startGame();
+}
+
 // Initialize game
 function init() {
-    // Create welcome audio
-    welcomeAudio = createWelcomeAudio();
-    
-    // Auto-play welcome audio when page loads
-    setTimeout(() => {
-        playWelcomeAudio();
-    }, 1000);
+    // Auto-play welcome audio after 1 second
+    setTimeout(playWelcomeAudio, 1000);
     
     // Initialize background music
     initBackgroundMusic();
@@ -659,14 +696,14 @@ function updatePlayerDisplay() {
     // Update player name in UI
     const gamePlayerName = document.getElementById('gamePlayerName');
     if (gamePlayerName) {
-        gamePlayerName.textContent = currentPlayerName;
+        gamePlayerName.textContent = currentPlayerName || 'Student';
     }
     
     // Update level name
     const gameLevelName = document.getElementById('gameLevelName');
     if (gameLevelName) {
         const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
-        gameLevelName.textContent = educationalLevels[levelIndex];
+        gameLevelName.textContent = educationalLevels[levelIndex] || 'Montessori';
     }
 }
 
@@ -1117,8 +1154,9 @@ function drawAsteroids() {
         ctx.font = `bold ${Math.max(8, asteroid.size / 5)}px Arial`;
         ctx.textAlign = 'center';
         
-        // Display bad habit name (simplified approach)
+        // Display bad habit name clearly
         if (asteroid.badHabit) {
+            ctx.textBaseline = 'middle';
             const text = asteroid.badHabit;
             const words = text.split(' ');
             
@@ -1133,11 +1171,9 @@ function drawAsteroids() {
                 ctx.strokeText(words[1], 0, 6);
                 ctx.fillText(words[1], 0, 6);
             } else {
-                // Multiple words - show first two words
-                ctx.strokeText(words[0], 0, -6);
-                ctx.fillText(words[0], 0, -6);
-                ctx.strokeText(words[1], 0, 6);
-                ctx.fillText(words[1], 0, 6);
+                // Multiple words - show first word only for clarity
+                ctx.strokeText(words[0], 0, 0);
+                ctx.fillText(words[0], 0, 0);
             }
         }
         

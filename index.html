@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Space Defender - Mikflo Schools</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Defender - Mikflo Schools Educational Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="game-container">
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         
+        <!-- Game HUD - Always visible -->
         <div class="game-ui">
             <div class="player-info">
                 <div>👤 <span id="gamePlayerName">Student</span></div>
@@ -23,9 +24,10 @@
         
         <!-- Mikflo Schools Watermark -->
         <div class="school-watermark">
-            <div class="watermark-logo">MIKFLO SCHOOLS</div>
+            <div class="watermark-logo">MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB</div>
         </div>
 
+        <!-- Start Screen -->
         <div class="menu-screen" id="startScreen">
             <div class="school-logo">
                 <div class="logo-placeholder">
@@ -43,63 +45,6 @@
             <button class="menu-button" onclick="showUsernameInput()">START GAME</button>
             <button class="menu-button" onclick="showInstructions()">INSTRUCTIONS</button>
             <button class="menu-button" onclick="showHighScores()">HIGH SCORES</button>
-        </div>
-
-        <div class="menu-screen" id="gameOverScreen" style="display: none;">
-            <div class="school-logo">
-                <div class="logo-placeholder">
-                    <div class="logo-text">MIKFLO</div>
-                    <div class="logo-subtext">SCHOOLS</div>
-                </div>
-            </div>
-            <h1>GAME OVER</h1>
-            <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
-                MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
-            </p>
-            <div style="margin: 20px 0;">
-                <div style="font-size: 1.2em; color: #0099ff; margin-bottom: 10px;">Student: <span id="playerNameDisplay"></span></div>
-                <div style="font-size: 1.2em; color: #ffff00; margin-bottom: 10px;">Class Level: <span id="levelNameDisplay"></span></div>
-                <div style="font-size: 1.5em; color: #00ff88;">Final Score: <span id="finalScore">0</span></div>
-                <div id="highScoreMessage" style="display: none;" class="high-score">🏆 NEW HIGH SCORE! 🏆</div>
-                <div id="motivationalMessage" style="margin-top: 15px; font-size: 1.1em; color: #00ff88;"></div>
-            </div>
-            <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
-            <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
-        </div>
-
-        <div class="menu-screen" id="instructionsScreen" style="display: none;">
-            <div class="school-logo">
-                <div class="logo-placeholder">
-                    <div class="logo-text">MIKFLO</div>
-                    <div class="logo-subtext">SCHOOLS</div>
-                </div>
-            </div>
-            <h1>INSTRUCTIONS</h1>
-            <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
-                MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
-            </p>
-            <div style="text-align: left; margin: 20px 0;">
-                <p><strong>🎮 Controls:</strong></p>
-                <p>• On-screen D-pad or Arrow Keys/WASD: Move spaceship</p>
-                <p>• Shoot button or Spacebar: Fire lasers</p>
-                <p>• Pause button or P: Pause game</p>
-                <br>
-                <p><strong>🎯 Educational Mission:</strong></p>
-                <p>• Destroy bad habit asteroids to build good character</p>
-                <p>• Each asteroid destroyed improves your behavior score</p>
-                <p>• Progress through educational levels from Montessori to SS3</p>
-                <p>• Collect power-ups for special abilities</p>
-                <br>
-                <p><strong>⚡ Power-ups:</strong></p>
-                <p>• 🔥 Rapid Fire: Faster learning</p>
-                <p>• 🛡️ Shield: Protection from bad influences</p>
-                <p>• 💥 Multi-shot: Multiple good choices</p>
-                <br>
-                <p><strong>📚 Class Levels:</strong></p>
-                <p>• Montessori → Basic 1-9 → SS1-3</p>
-                <p>• Each level brings new challenges!</p>
-            </div>
-            <button class="menu-button" onclick="showMenu()">BACK</button>
         </div>
 
         <!-- Username Input Screen -->
@@ -120,15 +65,76 @@
                     Enter Your Name:
                 </label>
                 <input type="text" id="playerName" placeholder="Student Name" maxlength="20" 
-                       style="padding: 15px; font-size: 1.1em; border: 2px solid #00ff88; border-radius: 10px; 
-                              background: rgba(0,0,0,0.7); color: #fff; text-align: center; width: 250px; 
-                              margin-bottom: 20px;" onkeypress="if(event.key==='Enter')startGameWithName()">
+                       class="username-input" onkeypress="if(event.key==='Enter')startGameWithName()">
             </div>
             
             <button class="menu-button" onclick="startGameWithName()">BEGIN MISSION</button>
             <button class="menu-button" onclick="showMenu()">BACK</button>
         </div>
 
+        <!-- Game Over Screen -->
+        <div class="menu-screen" id="gameOverScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
+            <h1>GAME OVER</h1>
+            <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
+                MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
+            </p>
+            
+            <div id="highScoreMessage" style="display: none; color: #ffff00; font-size: 1.2em; margin-bottom: 15px;">
+                🏆 NEW SESSION HIGH SCORE! 🏆
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <div style="color: #00ff88; font-size: 1.1em;">Player: <span id="playerNameDisplay"></span></div>
+                <div style="color: #0099ff; font-size: 1.3em;">Final Score: <span id="finalScore">0</span></div>
+                <div style="color: #ffaa00;">Level Reached: <span id="levelNameDisplay"></span></div>
+            </div>
+            
+            <div id="motivationalMessage" style="color: #00ff88; margin: 15px 0; font-style: italic;"></div>
+            
+            <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
+            <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
+        </div>
+
+        <!-- Instructions Screen -->
+        <div class="menu-screen" id="instructionsScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
+            <h1>INSTRUCTIONS</h1>
+            <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
+                MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
+            </p>
+            
+            <div class="instructions">
+                <h3>🎯 Mission Objective</h3>
+                <p>Destroy bad habit asteroids and build good character! Progress through educational levels from Montessori to SS3.</p>
+                
+                <h3>🕹️ Controls</h3>
+                <p><strong>Desktop:</strong> WASD or Arrow Keys to move, Spacebar to shoot, P to pause</p>
+                <p><strong>Mobile:</strong> Use the on-screen D-pad and buttons (always visible)</p>
+                
+                <h3>🎮 Bad Habits to Destroy</h3>
+                <p>LAZINESS • BULLYING • CHEATING • LYING • LATE COMING • FIGHTING • and many more!</p>
+                
+                <h3>📚 Educational Levels</h3>
+                <p>Montessori → Basic 1-9 → SS1 → SS2 → SS3</p>
+                
+                <h3>⚡ Power-ups</h3>
+                <p>🔥 Rapid Fire • 🛡️ Shield • 🎯 Multi-Shot</p>
+            </div>
+            <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <!-- High Scores Screen -->
         <div class="menu-screen" id="highScoresScreen" style="display: none;">
             <div class="school-logo">
                 <div class="logo-placeholder">
@@ -140,69 +146,31 @@
             <p style="font-size: 0.8em; color: #888; margin-bottom: 15px;">
                 MIKFLO SCHOOLS TECHNOLOGY DIVISION - STEAM HUB
             </p>
-            <div style="margin: 20px 0; font-size: 1.2em;">
-                <div id="highScoresList" style="max-height: 300px; overflow-y: auto;">
-                    <!-- High scores will be populated here -->
-                </div>
-            </div>
+            
+            <div id="highScoresList"></div>
             <button class="menu-button" onclick="showMenu()">BACK</button>
+        </div>
+
+        <!-- Mobile Controls - Always visible on all screens -->
+        <div class="mobile-controls">
+            <!-- D-Pad -->
+            <div class="dpad">
+                <button class="dpad-btn dpad-up" ontouchstart="mobileControls.up=true" ontouchend="mobileControls.up=false" onmousedown="mobileControls.up=true" onmouseup="mobileControls.up=false">↑</button>
+                <button class="dpad-btn dpad-down" ontouchstart="mobileControls.down=true" ontouchend="mobileControls.down=false" onmousedown="mobileControls.down=true" onmouseup="mobileControls.down=false">↓</button>
+                <button class="dpad-btn dpad-left" ontouchstart="mobileControls.left=true" ontouchend="mobileControls.left=false" onmousedown="mobileControls.left=true" onmouseup="mobileControls.left=false">←</button>
+                <button class="dpad-btn dpad-right" ontouchstart="mobileControls.right=true" ontouchend="mobileControls.right=false" onmousedown="mobileControls.right=true" onmouseup="mobileControls.right=false">→</button>
+                <div class="dpad-center"></div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn shoot-btn" ontouchstart="mobileControls.shoot=true" ontouchend="mobileControls.shoot=false" onmousedown="mobileControls.shoot=true" onmouseup="mobileControls.shoot=false">🔫</button>
+                <button class="action-btn pause-btn" onclick="togglePause()">⏸️</button>
+            </div>
         </div>
 
         <div class="controls">
             <div>Desktop: Arrow Keys/WASD to move, Spacebar to shoot, P to pause | Mobile: Use on-screen controls</div>
-        </div>
-
-        <!-- Mobile On-Screen Controls -->
-        <div class="mobile-controls" id="mobileControls">
-            <!-- Movement D-Pad -->
-            <div class="dpad-container">
-                <div class="dpad">
-                    <button class="dpad-btn dpad-up" id="moveUp">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-                        </svg>
-                    </button>
-                    <div class="dpad-middle">
-                        <button class="dpad-btn dpad-left" id="moveLeft">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
-                            </svg>
-                        </button>
-                        <div class="dpad-center"></div>
-                        <button class="dpad-btn dpad-right" id="moveRight">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <button class="dpad-btn dpad-down" id="moveDown">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button class="action-btn pause-btn" id="pauseBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                    </svg>
-                </button>
-                <button class="action-btn shoot-btn" id="shootBtn">
-                    <div class="shoot-icon">
-                        <svg width="32" height="32" viewBox="0 0 100 100" fill="currentColor">
-                            <!-- Mikflo Schools Logo-inspired bullet design -->
-                            <circle cx="50" cy="20" r="8" fill="#00ff88"/>
-                            <text x="50" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#00ff88">M</text>
-                            <rect x="45" y="25" width="10" height="30" fill="#0099ff"/>
-                            <polygon points="45,60 55,60 50,80" fill="#ffff00"/>
-                        </svg>
-                    </div>
-                    <span>FIRE</span>
-                </button>
-            </div>
         </div>
     </div>
 
