@@ -11,32 +11,68 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         
         <div class="game-ui">
+            <div class="player-info">
+                <div>👤 <span id="gamePlayerName">Student</span></div>
+                <div>📚 <span id="gameLevelName">Montessori</span></div>
+            </div>
             <div>Score: <span id="score">0</span></div>
             <div>Lives: <span id="lives">3</span></div>
             <div>Level: <span id="level">1</span></div>
             <div id="powerUpStatus"></div>
         </div>
+        
+        <!-- Mikflo Schools Watermark -->
+        <div class="school-watermark">
+            <div class="watermark-logo">MIKFLO SCHOOLS</div>
+        </div>
 
         <div class="menu-screen" id="startScreen">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
             <h1>🚀 SPACE DEFENDER</h1>
-            <h2>Mikflo Schools Technology Division</h2>
-            <p style="margin-bottom: 30px;">Defend Earth from the asteroid invasion!</p>
+            <h2>Mikflo Schools Educational Game</h2>
+            <p style="margin-bottom: 20px;">Destroy Bad Habits & Build Character!</p>
+            
+            <div class="username-input">
+                <label for="playerName">Enter Your Name:</label>
+                <input type="text" id="playerName" placeholder="Student Name" maxlength="20">
+            </div>
+            
             <button class="menu-button" onclick="startGame()">START GAME</button>
             <button class="menu-button" onclick="showInstructions()">INSTRUCTIONS</button>
             <button class="menu-button" onclick="showHighScores()">HIGH SCORES</button>
         </div>
 
         <div class="menu-screen" id="gameOverScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
             <h1>GAME OVER</h1>
             <div style="margin: 20px 0;">
+                <div style="font-size: 1.2em; color: #0099ff; margin-bottom: 10px;">Student: <span id="playerNameDisplay"></span></div>
+                <div style="font-size: 1.2em; color: #ffff00; margin-bottom: 10px;">Class Level: <span id="levelNameDisplay"></span></div>
                 <div style="font-size: 1.5em; color: #00ff88;">Final Score: <span id="finalScore">0</span></div>
                 <div id="highScoreMessage" style="display: none;" class="high-score">🏆 NEW HIGH SCORE! 🏆</div>
+                <div id="motivationalMessage" style="margin-top: 15px; font-size: 1.1em; color: #00ff88;"></div>
             </div>
             <button class="menu-button" onclick="restartGame()">PLAY AGAIN</button>
             <button class="menu-button" onclick="showMenu()">MAIN MENU</button>
         </div>
 
         <div class="menu-screen" id="instructionsScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
             <h1>INSTRUCTIONS</h1>
             <div style="text-align: left; margin: 20px 0;">
                 <p><strong>🎮 Controls:</strong></p>
@@ -44,23 +80,36 @@
                 <p>• Shoot button or Spacebar: Fire lasers</p>
                 <p>• Pause button or P: Pause game</p>
                 <br>
-                <p><strong>🎯 Objective:</strong></p>
-                <p>• Destroy asteroids to earn points</p>
+                <p><strong>🎯 Educational Mission:</strong></p>
+                <p>• Destroy bad habit asteroids to build good character</p>
+                <p>• Each asteroid destroyed improves your behavior score</p>
+                <p>• Progress through educational levels from Montessori to SS3</p>
                 <p>• Collect power-ups for special abilities</p>
-                <p>• Survive as long as possible!</p>
                 <br>
                 <p><strong>⚡ Power-ups:</strong></p>
-                <p>• 🔥 Rapid Fire: Faster shooting</p>
-                <p>• 🛡️ Shield: Temporary protection</p>
-                <p>• 💥 Multi-shot: Triple laser beams</p>
+                <p>• 🔥 Rapid Fire: Faster learning</p>
+                <p>• 🛡️ Shield: Protection from bad influences</p>
+                <p>• 💥 Multi-shot: Multiple good choices</p>
+                <br>
+                <p><strong>📚 Class Levels:</strong></p>
+                <p>• Montessori → Basic 1-9 → SS1-3</p>
+                <p>• Each level brings new challenges!</p>
             </div>
             <button class="menu-button" onclick="showMenu()">BACK</button>
         </div>
 
         <div class="menu-screen" id="highScoresScreen" style="display: none;">
+            <div class="school-logo">
+                <div class="logo-placeholder">
+                    <div class="logo-text">MIKFLO</div>
+                    <div class="logo-subtext">SCHOOLS</div>
+                </div>
+            </div>
             <h1>HIGH SCORES</h1>
-            <div style="margin: 20px 0; font-size: 1.5em;">
-                <div style="color: #ffff00;">Best Score: <span id="displayHighScore">0</span></div>
+            <div style="margin: 20px 0; font-size: 1.2em;">
+                <div id="highScoresList" style="max-height: 300px; overflow-y: auto;">
+                    <!-- High scores will be populated here -->
+                </div>
             </div>
             <button class="menu-button" onclick="showMenu()">BACK</button>
         </div>

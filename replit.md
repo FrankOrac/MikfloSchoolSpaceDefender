@@ -1,8 +1,8 @@
-# Space Defender Game
+# Space Defender Game - Educational Edition
 
 ## Overview
 
-Space Defender is a browser-based arcade-style space shooter game developed for Mikflo Schools Technology Division. The game is built using vanilla HTML5 Canvas, JavaScript, and CSS, featuring a retro space theme where players defend Earth from asteroid invasions.
+Space Defender is an educational browser-based space shooter game designed for Mikflo Schools. Players destroy "bad habit" asteroids while progressing through educational levels from Montessori to SS3. The game combines entertainment with character building, featuring personalized scoring, motivational messages, and comprehensive school branding.
 
 ## User Preferences
 
@@ -29,11 +29,16 @@ Preferred communication style: Simple, everyday language.
 - **HUD Elements**: Real-time display of score, lives, level, and power-up status
 - **Mobile Controls**: On-screen D-pad and action buttons for touch devices
 
-#### Game Features
-- **Progressive Difficulty**: Level-based asteroid spawning with increasing complexity
-- **Power-up System**: Temporary abilities like rapid fire, shields, and multi-shot
-- **Particle Effects**: Visual feedback for explosions and impacts
-- **Starfield Background**: Animated space environment
+#### Educational Game Features
+- **Bad Habit Asteroids**: 30+ different bad habits displayed on asteroids (failure, bullying, cheating, etc.)
+- **Educational Level System**: Progress from Montessori through Basic 1-9 to SS1-SS3
+- **Personalized Experience**: Username input with customized scoring and messages  
+- **Character Building Focus**: Motivational messages when destroying bad habits
+- **School Branding**: Mikflo Schools logos and branding throughout the game
+- **Sound Effects**: Audio feedback for all game actions using Web Audio API
+- **Progressive Difficulty**: Level-based spawning with educational context
+- **Power-up System**: Rapid fire, shields, and multi-shot with educational themes
+- **High Score System**: Top 10 leaderboard with student names and class levels
 
 ### Data Flow
 

@@ -2,13 +2,47 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Game state
+// Educational Game Data
+const badHabits = [
+    'FAILURE', 'LATE COMING', 'LATE FEES PAYMENT', 'BULLYING', 'LAZINESS', 
+    'BAD LANGUAGE', 'NOISE MAKING', 'FIGHTING', 'LYING', 'CHEATING', 
+    'EXAM MALPRACTICE', 'DISRESPECT', 'STEALING', 'GOSSIPING', 'RUDENESS',
+    'PROCRASTINATION', 'DISOBEDIENCE', 'JEALOUSY', 'ANGER', 'HATRED',
+    'GREED', 'PRIDE', 'IMPATIENCE', 'SELFISHNESS', 'BACKBITING',
+    'TRUANCY', 'VANDALISM', 'SUBSTANCE ABUSE', 'CYBERBULLYING', 'NEGATIVITY'
+];
+
+const educationalLevels = [
+    'Montessori', 'Basic 1', 'Basic 2', 'Basic 3', 'Basic 4', 'Basic 5',
+    'Basic 6', 'Basic 7', 'Basic 8', 'Basic 9', 'SS1', 'SS2', 'SS3'
+];
+
+const motivationalMessages = [
+    'Excellent character building!', 'Great job fighting bad habits!', 
+    'You\'re becoming a better student!', 'Keep up the good work!',
+    'Outstanding behavior improvement!', 'You\'re setting a great example!',
+    'Your character is shining bright!', 'Wonderful progress, keep going!'
+];
+
+// Player and Game State
+let playerName = 'Student';
+let currentPlayerName = 'Student';
 let gameRunning = false;
 let gamePaused = false;
 let score = 0;
 let lives = 3;
 let level = 1;
-let highScore = 0;
+let highScores = [];
+
+// Sound Effects (Simple beep sounds using Web Audio API)
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const sounds = {
+    shoot: () => playTone(800, 0.1),
+    explosion: () => playTone(200, 0.3),
+    powerup: () => playTone(400, 0.2),
+    hit: () => playTone(150, 0.2),
+    levelup: () => playTone(600, 0.5)
+};
 
 // Game objects
 let player = {};
@@ -47,13 +81,88 @@ let asteroidSpawnTimer = 0;
 let powerUpSpawnTimer = 0;
 let shootTimer = 0;
 
+// Sound Effect Functions
+function playTone(frequency, duration) {
+    try {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.value = frequency;
+        oscillator.type = 'square';
+        
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + duration);
+    } catch (e) {
+        // Fallback for browsers that don't support Web Audio API
+        console.log('Sound effect played: ' + frequency + 'Hz');
+    }
+}
+
+// Background Music System
+let backgroundMusic = null;
+let musicEnabled = true;
+
+function initBackgroundMusic() {
+    // Create a simple ambient background sound using Web Audio API
+    try {
+        if (backgroundMusic) return;
+        
+        const oscillator1 = audioContext.createOscillator();
+        const oscillator2 = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        const filter = audioContext.createBiquadFilter();
+        
+        oscillator1.connect(filter);
+        oscillator2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator1.frequency.value = 110; // Low ambient tone
+        oscillator2.frequency.value = 220; // Higher ambient tone
+        oscillator1.type = 'sawtooth';
+        oscillator2.type = 'sine';
+        
+        filter.type = 'lowpass';
+        filter.frequency.value = 800;
+        
+        gainNode.gain.value = 0.02; // Very quiet background
+        
+        oscillator1.start();
+        oscillator2.start();
+        
+        backgroundMusic = { oscillator1, oscillator2, gainNode };
+        
+        // Fade in/out effects during gameplay
+        setInterval(() => {
+            if (gameRunning && musicEnabled && backgroundMusic) {
+                const variation = Math.sin(Date.now() * 0.001) * 0.01;
+                backgroundMusic.gainNode.gain.value = 0.02 + variation;
+            }
+        }, 1000);
+        
+    } catch (e) {
+        console.log('Background music not supported in this browser');
+    }
+}
+
 // Initialize game
 function init() {
-    // Load high score
-    const saved = localStorage.getItem('spaceDefenderHighScore');
+    // Load high scores
+    const saved = localStorage.getItem('mikfloSpaceDefenderScores');
     if (saved) {
-        highScore = parseInt(saved);
+        highScores = JSON.parse(saved);
+    } else {
+        highScores = [];
     }
+    
+    // Initialize background music
+    initBackgroundMusic();
     
     // Create starfield background with school colors
     for (let i = 0; i < 100; i++) {
@@ -284,6 +393,15 @@ function resetPlayer() {
 }
 
 function startGame() {
+    // Get player name from input
+    const nameInput = document.getElementById('playerName');
+    if (nameInput && nameInput.value.trim()) {
+        currentPlayerName = nameInput.value.trim();
+    } else {
+        currentPlayerName = 'Student';
+    }
+    
+    // Initialize game state
     gameRunning = true;
     gamePaused = false;
     score = 0;
@@ -301,6 +419,10 @@ function startGame() {
     resetPlayer();
     hideAllScreens();
     updateUI();
+    updatePlayerDisplay();
+    
+    // Play start sound
+    sounds.levelup();
 }
 
 function gameLoop(currentTime) {
@@ -448,7 +570,9 @@ function spawnAsteroids(deltaTime) {
     if (asteroidSpawnTimer > spawnRate) {
         asteroidSpawnTimer = 0;
         
-        const size = Math.random() * 30 + 20;
+        const size = Math.random() * 40 + 30; // Larger asteroids for text
+        const badHabit = badHabits[Math.floor(Math.random() * badHabits.length)];
+        
         const asteroid = {
             x: Math.random() * (canvas.width - size),
             y: -size,
@@ -456,11 +580,98 @@ function spawnAsteroids(deltaTime) {
             speed: Math.random() * 3 + 2 + level * 0.5,
             rotation: 0,
             rotationSpeed: (Math.random() - 0.5) * 0.2,
-            health: Math.floor(size / 20)
+            health: Math.floor(size / 25),
+            badHabit: badHabit,
+            color: getHabitColor(badHabit)
         };
         
         asteroids.push(asteroid);
     }
+}
+
+function getHabitColor(habit) {
+    // Different colors for different types of bad habits
+    const colors = ['#ff4444', '#ff6600', '#cc0066', '#9900cc', '#6600ff', '#0066ff'];
+    let hash = 0;
+    for (let i = 0; i < habit.length; i++) {
+        hash = habit.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+}
+
+function updatePlayerDisplay() {
+    // Update player name in UI
+    const gamePlayerName = document.getElementById('gamePlayerName');
+    if (gamePlayerName) {
+        gamePlayerName.textContent = currentPlayerName;
+    }
+    
+    // Update level name
+    const gameLevelName = document.getElementById('gameLevelName');
+    if (gameLevelName) {
+        const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
+        gameLevelName.textContent = educationalLevels[levelIndex];
+    }
+}
+
+function updateLevel() {
+    const newLevel = Math.floor(score / 1000) + 1;
+    if (newLevel > level) {
+        level = newLevel;
+        sounds.levelup();
+        updateUI();
+        updatePlayerDisplay();
+        
+        // Show level up message
+        showLevelUpMessage();
+    }
+}
+
+function showLevelUpMessage() {
+    // Create floating level up text
+    const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
+    const levelName = educationalLevels[levelIndex];
+    
+    particles.push({
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        vx: 0,
+        vy: -2,
+        size: 1,
+        color: '#ffff00',
+        life: 180,
+        text: `Level Up! ${levelName}`,
+        isText: true
+    });
+}
+
+function showMotivationalMessage(x, y) {
+    const message = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+    particles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 2,
+        vy: -3,
+        size: 1,
+        color: '#00ff88',
+        life: 120,
+        text: message,
+        isText: true
+    });
+}
+
+function showNegativeMessage(x, y, badHabit) {
+    particles.push({
+        x: x,
+        y: y,
+        vx: 0,
+        vy: -2,
+        size: 1,
+        color: '#ff4444',
+        life: 100,
+        text: `Avoid ${badHabit}!`,
+        isText: true
+    });
 }
 
 function spawnPowerUps(deltaTime) {
@@ -495,7 +706,8 @@ function checkCollisions() {
             
             if (isColliding(bullet, asteroid)) {
                 // Create explosion particles
-                createExplosion(asteroid.x, asteroid.y, '#ff6600');
+                createExplosion(asteroid.x, asteroid.y, asteroid.color || '#ff6600');
+                sounds.explosion(); // Play explosion sound
                 
                 // Remove bullet
                 bullets.splice(i, 1);
@@ -503,9 +715,16 @@ function checkCollisions() {
                 // Damage asteroid
                 asteroid.health--;
                 if (asteroid.health <= 0) {
-                    // Award points based on asteroid size
-                    score += Math.floor(asteroid.size / 10) * 10;
+                    // Award points based on destroying bad habits
+                    const points = Math.floor(asteroid.size / 10) * 15;
+                    score += points;
                     asteroids.splice(j, 1);
+                    sounds.hit(); // Play hit sound
+                    
+                    // Show motivational message occasionally
+                    if (Math.random() < 0.3) {
+                        showMotivationalMessage(asteroid.x, asteroid.y);
+                    }
                 }
                 
                 updateUI();
@@ -522,6 +741,7 @@ function checkCollisions() {
             if (isColliding(player, asteroid)) {
                 // Create explosion particles
                 createExplosion(player.x, player.y, '#ff0000');
+                sounds.hit(); // Play hit sound
                 
                 // Remove asteroid
                 asteroids.splice(i, 1);
@@ -532,6 +752,9 @@ function checkCollisions() {
                 
                 // Reset player position
                 resetPlayer();
+                
+                // Show negative message
+                showNegativeMessage(player.x, player.y, asteroid.badHabit);
                 
                 break;
             }
@@ -548,6 +771,7 @@ function checkCollisions() {
             
             // Create pickup particles
             createExplosion(powerUp.x, powerUp.y, '#00ff88');
+            sounds.powerup(); // Play power-up sound
             
             // Remove power-up
             powerUps.splice(i, 1);
@@ -634,6 +858,7 @@ function shoot() {
     
     if (currentTime - shootTimer > shootDelay) {
         shootTimer = currentTime;
+        sounds.shoot(); // Play shooting sound
         
         if (multiShot) {
             // Triple shot
@@ -804,8 +1029,8 @@ function drawAsteroids() {
         ctx.translate(asteroid.x, asteroid.y);
         ctx.rotate(asteroid.rotation);
         
-        // Draw asteroid with rocky texture
-        ctx.fillStyle = '#666';
+        // Draw asteroid with bad habit color
+        ctx.fillStyle = asteroid.color || '#666';
         ctx.strokeStyle = '#999';
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -813,7 +1038,7 @@ function drawAsteroids() {
         const points = 8;
         for (let i = 0; i < points; i++) {
             const angle = (i / points) * Math.PI * 2;
-            const radius = asteroid.size * (0.8 + Math.random() * 0.4);
+            const radius = asteroid.size * (0.8 + Math.sin(Date.now() * 0.01 + i) * 0.1);
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
             
@@ -827,6 +1052,37 @@ function drawAsteroids() {
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
+        
+        // Draw bad habit name on asteroid
+        ctx.rotate(-asteroid.rotation); // Reset rotation for text
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.font = `bold ${Math.max(8, asteroid.size / 5)}px Arial`;
+        ctx.textAlign = 'center';
+        
+        // Word wrap for long habit names
+        const words = asteroid.badHabit.split(' ');
+        const maxWidth = asteroid.size * 1.5;
+        let line = '';
+        let y = -5;
+        
+        for (let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = ctx.measureText(testLine);
+            const testWidth = metrics.width;
+            
+            if (testWidth > maxWidth && n > 0) {
+                ctx.strokeText(line, 0, y);
+                ctx.fillText(line, 0, y);
+                line = words[n] + ' ';
+                y += 12;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.strokeText(line, 0, y);
+        ctx.fillText(line, 0, y);
         
         ctx.restore();
     }
@@ -879,10 +1135,24 @@ function drawParticles() {
     for (let particle of particles) {
         ctx.save();
         ctx.globalAlpha = particle.life / 100;
-        ctx.fillStyle = particle.color;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
+        
+        if (particle.isText && particle.text) {
+            // Draw text particle
+            ctx.fillStyle = particle.color;
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.strokeText(particle.text, particle.x, particle.y);
+            ctx.fillText(particle.text, particle.x, particle.y);
+        } else {
+            // Draw regular particle
+            ctx.fillStyle = particle.color;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
         ctx.restore();
     }
 }
@@ -897,16 +1167,48 @@ function updateUI() {
 function gameOver() {
     gameRunning = false;
     
-    // Update high score
-    if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('spaceDefenderHighScore', highScore.toString());
+    // Save high score with player name and level
+    const levelIndex = Math.min(level - 1, educationalLevels.length - 1);
+    const currentLevelName = educationalLevels[levelIndex];
+    
+    const newScore = {
+        name: currentPlayerName,
+        score: score,
+        level: level,
+        levelName: currentLevelName,
+        date: new Date().toLocaleDateString()
+    };
+    
+    // Add to high scores and sort
+    highScores.push(newScore);
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 10); // Keep top 10
+    
+    // Save to localStorage
+    localStorage.setItem('mikfloSpaceDefenderScores', JSON.stringify(highScores));
+    
+    // Check if it's a new high score
+    const isNewHighScore = highScores[0].score === score && highScores[0].name === currentPlayerName;
+    
+    if (isNewHighScore) {
         document.getElementById('highScoreMessage').style.display = 'block';
     } else {
         document.getElementById('highScoreMessage').style.display = 'none';
     }
     
+    // Update display
     document.getElementById('finalScore').textContent = score;
+    document.getElementById('playerNameDisplay').textContent = currentPlayerName;
+    document.getElementById('levelNameDisplay').textContent = currentLevelName;
+    
+    // Show motivational message
+    const motivationalMsg = document.getElementById('motivationalMessage');
+    if (motivationalMsg) {
+        const message = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+        motivationalMsg.textContent = `${currentPlayerName}, ${message}`;
+    }
+    
+    updateHighScoresDisplay();
     document.getElementById('gameOverScreen').style.display = 'flex';
 }
 
@@ -927,7 +1229,41 @@ function showInstructions() {
 
 function showHighScores() {
     hideAllScreens();
+    updateHighScoresDisplay();
     document.getElementById('highScoresScreen').style.display = 'flex';
+}
+
+function updateHighScoresDisplay() {
+    const highScoresList = document.getElementById('highScoresList');
+    if (!highScoresList) return;
+    
+    if (highScores.length === 0) {
+        highScoresList.innerHTML = '<div style="color: #888; text-align: center;">No scores yet. Be the first to play!</div>';
+        return;
+    }
+    
+    let html = '<div style="text-align: center; margin-bottom: 20px; color: #00ff88; font-weight: bold;">🏆 TOP STUDENTS 🏆</div>';
+    
+    highScores.forEach((score, index) => {
+        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+        const color = index === 0 ? '#ffff00' : index === 1 ? '#c0c0c0' : index === 2 ? '#cd7f32' : '#00ff88';
+        
+        html += `
+            <div style="margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; border-left: 4px solid ${color};">
+                <div style="color: ${color}; font-size: 1.1em; font-weight: bold;">
+                    ${medal} ${score.name}
+                </div>
+                <div style="color: #0099ff; margin: 5px 0;">
+                    Class: ${score.levelName} | Score: ${score.score}
+                </div>
+                <div style="color: #888; font-size: 0.9em;">
+                    ${score.date}
+                </div>
+            </div>
+        `;
+    });
+    
+    highScoresList.innerHTML = html;
 }
 
 function hideAllScreens() {
@@ -959,3 +1295,19 @@ document.addEventListener('touchend', (e) => {
 document.addEventListener('touchmove', (e) => {
     e.preventDefault();
 }, { passive: false });
+
+// Handle audio context activation for mobile
+document.addEventListener('touchstart', function() {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}, { once: true });
+
+document.addEventListener('click', function() {
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}, { once: true });
+
+// Start the game when the page loads
+document.addEventListener('DOMContentLoaded', init);

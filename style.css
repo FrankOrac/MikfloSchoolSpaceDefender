@@ -51,6 +51,17 @@ body {
     margin-bottom: 10px;
 }
 
+.player-info {
+    border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 15px !important;
+}
+
+.player-info div {
+    margin-bottom: 5px !important;
+    font-size: 16px;
+}
+
 .menu-screen {
     position: absolute;
     top: 0;
@@ -130,6 +141,98 @@ body {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
     100% { transform: scale(1); }
+}
+
+/* School Logo Styles */
+.school-logo {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.logo-placeholder {
+    background: linear-gradient(45deg, #00ff88, #0099ff);
+    border-radius: 15px;
+    padding: 15px 25px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3);
+    animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+.logo-text {
+    font-size: 2em;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.logo-subtext {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000;
+    letter-spacing: 1px;
+}
+
+@keyframes logoGlow {
+    from { box-shadow: 0 5px 20px rgba(0, 255, 136, 0.3); }
+    to { box-shadow: 0 5px 30px rgba(0, 255, 136, 0.6), 0 0 40px rgba(0, 153, 255, 0.3); }
+}
+
+/* Username Input Styles */
+.username-input {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.username-input label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.username-input input {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    border: 2px solid #00ff88;
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+    max-width: 250px;
+}
+
+.username-input input:focus {
+    border-color: #0099ff;
+    box-shadow: 0 0 15px rgba(0, 153, 255, 0.5);
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.username-input input::placeholder {
+    color: #888;
+}
+
+/* School Watermark */
+.school-watermark {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.watermark-logo {
+    font-size: 12px;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+    letter-spacing: 1px;
+    transform: rotate(-15deg);
 }
 
 /* Mobile Controls */
