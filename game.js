@@ -246,7 +246,14 @@ function startGameWithName() {
     }
     currentPlayerName = nameInput;
     playerName = nameInput;
+    
+    // Now actually start the game
     startGame();
+}
+
+function showMenu() {
+    hideAllScreens();
+    document.getElementById('startScreen').style.display = 'flex';
 }
 
 // Initialize game
@@ -486,15 +493,7 @@ function resetPlayer() {
 }
 
 function startGame() {
-    // Get player name from input
-    const nameInput = document.getElementById('playerName');
-    if (nameInput && nameInput.value.trim()) {
-        currentPlayerName = nameInput.value.trim();
-    } else {
-        currentPlayerName = 'Student';
-    }
-    
-    // Initialize game state
+    // Initialize game state - this actually starts the gameplay
     gameRunning = true;
     gamePaused = false;
     score = 0;
@@ -1337,9 +1336,12 @@ function updateHighScoresDisplay() {
 }
 
 function hideAllScreens() {
-    const screens = ['startScreen', 'gameOverScreen', 'instructionsScreen', 'highScoresScreen'];
+    const screens = ['startScreen', 'usernameScreen', 'gameOverScreen', 'instructionsScreen', 'highScoresScreen'];
     screens.forEach(screen => {
-        document.getElementById(screen).style.display = 'none';
+        const element = document.getElementById(screen);
+        if (element) {
+            element.style.display = 'none';
+        }
     });
 }
 
