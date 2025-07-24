@@ -70,9 +70,18 @@ body {
   z-index: 1000;
 }
 
+.watermark-logo-img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
 .watermark-logo {
   font-weight: bold;
   text-transform: uppercase;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Menu screens */
@@ -95,6 +104,16 @@ body {
 /* School logo */
 .school-logo {
   margin-bottom: 30px;
+}
+
+.main-logo {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 2px solid #00ff88;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px;
 }
 
 .logo-placeholder {
@@ -205,6 +224,78 @@ body {
   color: #ccc;
   margin-bottom: 10px;
   line-height: 1.4;
+}
+
+/* Developer slide */
+.developer-slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(45deg, rgba(0, 255, 136, 0.95), rgba(0, 153, 255, 0.95));
+  border: 3px solid #00ff88;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  z-index: 3000;
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+  animation: slideIn 1s ease-out, slideOut 1s ease-out 4s;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -70%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+}
+
+.slide-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.slide-logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #000;
+}
+
+.slide-text h2 {
+  color: #000;
+  font-size: 1.5em;
+  margin: 0 0 5px 0;
+  font-weight: bold;
+}
+
+.slide-text h3 {
+  color: #000;
+  font-size: 1.2em;
+  margin: 0 0 5px 0;
+  font-weight: bold;
+}
+
+.slide-text p {
+  color: #000;
+  font-size: 0.9em;
+  margin: 0;
+  font-weight: bold;
 }
 
 

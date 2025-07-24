@@ -87,6 +87,11 @@ let asteroidSpawnTimer = 0;
 let powerUpSpawnTimer = 0;
 let shootTimer = 0;
 
+// Developer slide timing
+let developerSlideTimer = 0;
+let developerSlideInterval = 30000; // Show every 30 seconds
+let developerSlideShowing = false;
+
 // Sound Effect Functions
 function playTone(frequency, duration) {
     try {
@@ -563,6 +568,9 @@ function update(deltaTime) {
     
     // Update power-up effects
     updatePowerUpEffects(deltaTime);
+    
+    // Update developer slide
+    updateDeveloperSlide(deltaTime);
     
     // Update level
     updateLevel();
@@ -1380,6 +1388,33 @@ document.addEventListener('click', function() {
         audioContext.resume();
     }
 }, { once: true });
+
+// Developer slide functions
+function updateDeveloperSlide(deltaTime) {
+    developerSlideTimer += deltaTime;
+    
+    // Show developer slide every 30 seconds during gameplay
+    if (developerSlideTimer >= developerSlideInterval && !developerSlideShowing) {
+        showDeveloperSlide();
+        developerSlideTimer = 0;
+    }
+}
+
+function showDeveloperSlide() {
+    if (developerSlideShowing) return;
+    
+    developerSlideShowing = true;
+    const slideElement = document.getElementById('developerSlide');
+    if (slideElement) {
+        slideElement.style.display = 'block';
+        
+        // Hide the slide after 5 seconds
+        setTimeout(() => {
+            slideElement.style.display = 'none';
+            developerSlideShowing = false;
+        }, 5000);
+    }
+}
 
 // Start the game when the page loads
 document.addEventListener('DOMContentLoaded', init);
